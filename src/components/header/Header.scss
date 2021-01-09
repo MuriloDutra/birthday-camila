@@ -17,7 +17,7 @@
 
     .icon-container{
         position: absolute;
-        right: 10%;
+        right: 15%;
         top: 30%;
 
         .icon{
@@ -26,21 +26,5 @@
             margin-right: 20px;
             cursor: pointer;
         }
-    }
-
-    .languages-container{
-        width: 5%;
-        height: 30px;
-        background-color: black;
-        border: solid 1px white;
-        color: white;
-        position: fixed;
-        right: 2%;
-        top: 5%;
-    }
-    
-    .flag-image{
-        width: 30px;
-        height: 25px;
     }
 }

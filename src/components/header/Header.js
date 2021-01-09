@@ -2,8 +2,8 @@ import React from 'react'
 import './Header.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faInstagram, faTwitter} from '@fortawesome/free-brands-svg-icons'
-import brazilFlag from '../../Assets/BrazilFlag.jpg'
-import EUAFlag from '../../Assets/EUAFlag.jpg'
+import LanguageOptions from '../languageOptions/LanguageOptions'
+
 
 function Header(props){
     return (
@@ -13,16 +13,7 @@ function Header(props){
                 <FontAwesomeIcon onClick={() => window.open('https://twitter.com/')} className="icon" icon={faTwitter} />
                 <FontAwesomeIcon onClick={() => window.open('https://www.instagram.com/camilis_araujo/')} className="icon" icon={faInstagram} />
             </div>
-            
-            <img className="flag-image" src={brazilFlag}/>
-            <img className="flag-image" src={EUAFlag}/>
-
-            <select className="languages-container">
-                <option>
-                    PT-BR 
-                </option>
-                <option>EN-US</option>
-            </select>
+            <LanguageOptions />
         </div>
     )
 }

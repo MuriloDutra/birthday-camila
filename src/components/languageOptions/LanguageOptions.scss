@@ -1,0 +1,33 @@
+.languages-container{
+    width: 7%;
+    height: 30px;
+    background-color: black;
+    border: solid 1px white;
+    color: white;
+    position: fixed;
+    right: 2%;
+    top: 5%;
+
+    .selected-language{
+        text-align: center;
+        margin: 5px 0px 0px 0px;
+    }
+
+    .options{
+        background-color: black;
+        padding: 5px;
+        display: grid;
+        border: solid 1px white;
+        margin-top: 15%;
+
+        p{
+            margin: 5px;
+            border-bottom: solid 1px white;
+        }
+    }
+
+    .flag-image{
+        width: 25px;
+        height: 20px;
+    }
+}
