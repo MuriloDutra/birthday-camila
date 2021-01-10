@@ -10,7 +10,7 @@ function Header(props){
         <div className="header">
             <h1>CAMILA STYLES</h1>
             <div className="icon-container">
-                <FontAwesomeIcon onClick={() => window.open('https://twitter.com/')} className="icon" icon={faTwitter} />
+                <FontAwesomeIcon onClick={() => window.open('https://twitter.com/Ca_araujop?s=08')} className="icon" icon={faTwitter} />
                 <FontAwesomeIcon onClick={() => window.open('https://www.instagram.com/camilis_araujo/')} className="icon" icon={faInstagram} />
             </div>
             <LanguageOptions />

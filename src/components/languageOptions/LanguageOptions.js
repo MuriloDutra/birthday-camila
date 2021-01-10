@@ -3,6 +3,7 @@ import './LanguageOptions.scss'
 import BrazilFlag from '../../Assets/BrazilFlag.jpg'
 import EUAFlag from '../../Assets/EUAFlag.jpg'
 
+
 function LanguageOptions(props){
     const [showLanguageOptions, setShowLanguageOptions] = useState(false)
     const [currentLanguage, setCurrentLanguage] = useState('PT-BR')
