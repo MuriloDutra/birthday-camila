@@ -6,7 +6,7 @@ function Footer(props){
     return (
         <div className="links-container">
             <ul className="links">
-                <li>Você sabe quem ele é?</li>
+                <li>Do you know who he is?</li>
                 <li>Men band</li>
                 <li>Boy band</li>
                 <li>Tour</li>
