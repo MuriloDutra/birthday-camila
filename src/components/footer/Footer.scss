@@ -1,0 +1,19 @@
+.links-container{
+    padding: 2% 0% 2% 34%;
+
+    .links{
+        list-style: none;
+        display: flex;
+
+        li{
+            color: white;
+            margin-right: 20px;
+            font-size: 25px;
+        }
+
+        li:hover{
+            color: #e87f8d;
+            cursor: pointer;
+        }
+    }
+}
