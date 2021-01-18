@@ -20,16 +20,16 @@ function LanguageOptions(props){
         <div className="languages-container" onClick={() => setShowLanguageOptions(!showLanguageOptions)}>
             <p className="selected-language">
                 {`${currentLanguage} `}
-                <img className="flag-image" src={currentLanguage === 'PT-BR' ? BrazilFlag : EUAFlag} />
+                <img alt="selected-flag" className="flag-image" src={currentLanguage === 'PT-BR' ? BrazilFlag : EUAFlag} />
             </p>
 
             {   showLanguageOptions &&
                 <div className="options">
                     <p onClick={() => handleOnClick('PT-BR')}>
-                        PT-BR <img className="flag-image" src={BrazilFlag} />
+                        PT-BR <img alt="brazil-flag" className="flag-image" src={BrazilFlag} />
                     </p>
                     <p onClick={() => handleOnClick('EN-US')}>
-                        EN-US <img className="flag-image" src={EUAFlag} />
+                        EN-US <img alt="US-flag" className="flag-image" src={EUAFlag} />
                     </p>
                 </div>
             }
