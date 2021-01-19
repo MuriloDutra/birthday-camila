@@ -1,50 +1,61 @@
 import React, { useEffect } from 'react'
 import Header from './components/header/Header';
-import MainImage from './Assets/MainImage.jpg'
+import MainImage from './assets/MainImage.jpg'
 import './global.scss'
 import './App.scss'
 import Footer from './components/footer/Footer';
-import song from './Assets/WatermelonSugar.mp3'
+import song from './assets/juice.mp3'
+import Consumer from './context/ApplicationContext';
+
 
 function App() {
-  const songUrl = 'http://streaming.tdiradio.com:8000/house.mp3'
-  const audio = new Audio(song)
-
-
   useEffect(() => {
     document.title = 'Camila Araújo'
-    //audio.play()
+
+    setTimeout(() => {
+      const songPlayer = document.getElementById('song-player')
+      songPlayer.play();
+      songPlayer.muted = false;
+      songPlayer.currentTime = 80
+    }, 5000)
   }, [])
 
-
   return (
-    <div className="App">
-      <Header />
+    <Consumer>
+      { context => {
+        const { language } = context
+        
+        return (
+          <div id="app" className="App">
+            <Header />
 
-      <div className="main-content">
-        <div className="main-photo-container">
-          <img alt="Main image" src={MainImage} className="main-image"/>
-        </div>
-        <div className="main-text-container">
-          <h1>Lip sync</h1>
-          <h3>The new anniversary by Camila</h3>
-          <h1>#LoveOn30</h1>
-        </div>
-      </div>
+            <div className="main-content">
+              <div className="main-photo-container">
+                <img alt="Harry Styles" src={MainImage} className="main-image"/>
+              </div>
+              <div className="main-text-container">
+                <h1>{language.firstTitle}</h1>
+                <h3>{language.secondTitle}</h3>
+                <h1>{language.thirdTitle}</h1>
+              </div>
+            </div>
+            <div className="main-video-container">
+              <iframe
+                title="A Harry Styles video"
+                className='main-video'
+                src="https://www.youtube-nocookie.com/embed/P3cffdsEXXw"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
 
-      <div className="main-video-container">
-        <iframe
-          className='main-video'
-          src="https://www.youtube-nocookie.com/embed/P3cffdsEXXw"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          onCanPlay
-        />
-      </div>
-
-      <Footer />
-    </div>
+            <audio id="song-player" src={song} muted />
+            <Footer />
+          </div>
+        )
+      }}
+    </Consumer>
   );
 }
 
