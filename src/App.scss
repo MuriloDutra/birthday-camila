@@ -56,3 +56,33 @@
         height: 100%;
     }
 }
+
+@media(max-width: 767px){
+    .main-content{
+        display: grid;
+        padding-top: 25%;
+
+        .main-photo-container{
+            width: 100%;
+            height: fit-content;
+    
+            .main-image{
+                width: 100%;
+                margin-left: 3%;
+            }
+        }
+
+        .main-text-container{
+            width: 100%;
+            padding: 0% 0% 0% 1%;
+
+            h1{
+                font-size: 80px;
+            }
+    
+            h3{
+                font-size: 30px;
+            }
+        }
+    }
+}
