@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
-import Header from './components/header/Header';
-import MainImage from './assets/MainImage.jpg'
-import './global.scss'
-import './App.scss'
-import Footer from './components/footer/Footer';
-import song from './assets/juice.mp3'
-import Consumer from './context/ApplicationContext';
+import Header from '../../components/header/Header';
+import MainImage from '../../assets/MainImage.jpg'
+import '../../global.scss'
+import './Home.scss'
+import Footer from '../../components/footer/Footer';
+import song from '../../assets/juice.mp3'
+import Consumer from '../../context/ApplicationContext';
+import { withRouter } from 'react-router-dom';
 
 
-function App() {
+function Home() {
   useEffect(() => {
     document.title = 'Camila Araújo'
 
@@ -60,4 +61,4 @@ function App() {
 }
 
 
-export default App;
+export default withRouter(Home);

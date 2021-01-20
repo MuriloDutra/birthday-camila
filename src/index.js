@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApplicationContext } from './context/ApplicationContext';
+import Router from './router';
 
 ReactDOM.render(
   <React.StrictMode>
     <ApplicationContext>
-      <App />
+      <Router />
     </ApplicationContext>
   </React.StrictMode>,
   document.getElementById('root')
