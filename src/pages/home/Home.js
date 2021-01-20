@@ -28,8 +28,6 @@ function Home() {
         
         return (
           <div id="app" className="App">
-            <Header />
-
             <div className="main-content">
               <div className="main-photo-container">
                 <img alt="Harry Styles" src={MainImage} className="main-image"/>
