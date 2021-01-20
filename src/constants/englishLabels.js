@@ -4,7 +4,7 @@ export const englishLabels = {
     thirdTitle: '#LoveOn30',
     footer: {
         firstLink: 'Do you know who he is?',
-        secondLink: 'Men band',
+        secondLink: 'Man band',
         thridLink: 'Boy band',
         fourthLink: 'Tour'
     }

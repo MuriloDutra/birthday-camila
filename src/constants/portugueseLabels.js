@@ -1,10 +1,10 @@
 export const portugueseLabels = {
-    firstTitle: 'Lip sync',
-    secondTitle: 'O novo niver por Camila',
+    firstTitle: 'Karaoke',
+    secondTitle: 'O super aniversário de Camila',
     thirdTitle: '#LoveOn30',
     footer: {
         firstLink: 'Você sabe quem ele é?',
-        secondLink: 'Banda de homens',
+        secondLink: 'Banda de homem',
         thridLink: 'Banda de garotos',
         fourthLink: 'Fotos'
     }
