@@ -3,18 +3,91 @@
     height: 30px;
     padding-top: 8%;
 
-    .images-slide{
-        background-color: yellow;
+    .slide-container{
         text-align: -webkit-center;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 3%;
+        border-bottom: solid white 5px;
 
-        .main-image{
-            max-height: 30%;
-            width: 30%;
+        .slide{
+            display: flex;
+
+            .container-first-image, .container-second-image{
+                width: 50%;
+                display: grid;
+            
+                .photo-description{
+                    color: white;
+                    font-size: 25px;
+                    text-align: center;
+                }
+            }
+
+            p{
+                width: fit-content;
+                margin: 0px;
+                display: contents;
+            }
+        
+            .main-image{
+                width: 60%;
+                margin: 10px;
+            }
         }
 
         .arrow{
-            font-size: 40px;
+            font-size: 80px;
             cursor: pointer;
+            color: white;
+            margin: 10px;
+            position: absolute;
+            top: 50%;
+        }
+
+        .right-arrow{
+            margin: 10px;
+            right: 0px;
+        }
+
+        .left-arrow{
+            margin: 10px;
+            left: 0px;
+        }
+    }
+
+    .images-catalog{
+        width: 100%;
+        background-color: black;
+        height: fit-content;
+        padding: 0%;
+        text-align: center;
+
+        h1{
+            color: white;
+            text-align: left;
+            margin-left: 5%;
+            font-size: 50px;
+        }
+
+        .image-row{
+            display: flex;
+
+            div{
+                width: 50%;
+
+                p{
+                    color: white;
+                    font-size: 25px;
+                }
+            }
+        }
+
+        .normal-image{
+            width: 80%;
+            max-height: 80%;
+            margin: 2%;
         }
     }
 }
+
