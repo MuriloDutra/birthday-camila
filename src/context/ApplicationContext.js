@@ -8,6 +8,7 @@ const { Provider, Consumer } = createContext()
 class ApplicationContext extends Component{
     state = {
         language: englishLabels,
+        currentLanguage: 'EN-US'
     }
 
 
@@ -19,9 +20,9 @@ class ApplicationContext extends Component{
 
     changeLanguage(newLanguage){
         if(newLanguage === 'PT-BR'){
-            this.setState({language: portugueseLabels})
+            this.setState({language: portugueseLabels, currentLanguage: newLanguage})
         }else{
-            this.setState({language: englishLabels})
+            this.setState({language: englishLabels, currentLanguage: newLanguage})
         }
     }
 
@@ -30,6 +31,7 @@ class ApplicationContext extends Component{
         let value = {
             language: this.state.language,
             changeLanguage: this.changeLanguage,
+            currentLanguage: this.state.currentLanguage,
         }
 
         return (
