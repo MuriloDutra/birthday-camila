@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import partyImages from '../../constants/slideImages'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
 import catalogImages from '../../constants/catalogImages'
@@ -9,6 +9,8 @@ import Consumer from '../../context/ApplicationContext'
 
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
+    const [overlayImage, setOverlayImage] = useState('')
+
 
     function handleSlide(type){
         if(type === 'forward' && currentImage !== 2){
@@ -32,23 +34,39 @@ function Tour(props){
             if((index + 1) !== catalogImages.length && secondPictureOfColumn !== index){
                 secondPictureOfColumn = index + 1
 
+                const firstImage = image
+                const secondImage = catalogImages[index + 1]
+                const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
+                const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+
+
                 return (
                     <div className="image-row">
                         <div className="container-first-image">
-                            <img className="normal-image" src={image.imageUrl} />
+                            <img
+                                className="normal-image"
+                                src={firstImage.imageUrl}
+                                alt={firstImageAlt}
+                                onClick={() => handleImageClick(firstImage)}
+                            />
                             <p className="photo-description">
                                 {   currentLanguage === 'EN-US'
-                                    ? image.englishDescription
-                                    : image.portugueseDescription
+                                    ? firstImage.englishDescription
+                                    : firstImage.portugueseDescription
                                 }
                             </p>
                         </div>
                         <div className="container-second-image">
-                            <img className="normal-image" src={catalogImages[index + 1].imageUrl} />
+                            <img
+                                className="normal-image"
+                                src={secondImage.imageUrl}
+                                alt={secondImageAlt}
+                                onClick={() => handleImageClick(secondImage)}
+                            />
                             <p className="photo-description">
                                 {   currentLanguage === 'EN-US'
-                                    ? catalogImages[index + 1].englishDescription
-                                    : catalogImages[index + 1].portugueseDescription
+                                    ? secondImage.englishDescription
+                                    : secondImage.portugueseDescription
                                 }
                             </p>
                         </div>
@@ -59,46 +77,88 @@ function Tour(props){
     }
 
 
+    function handleImageClick(selectedImage){
+        setOverlayImage(selectedImage)
+    }
+
+
+    function downloadPhoto(){
+        var downloadLink = document.createElement("a");
+        downloadLink.href = overlayImage.imageUrl
+        downloadLink.download = `download.${overlayImage.type}`
+
+        document.body.appendChild(downloadLink)
+        downloadLink.click()
+        document.body.removeChild(downloadLink)
+    }
+
+
     return (
         <Consumer>
             {   context => {
                 const { currentLanguage } = context
 
+                const firstImage = partyImages[currentImage]
+                const secondImage = partyImages[currentImage + 1]
+                const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
+                const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+
                 return (
-                    <div className="tour-body">
-                        <div className="slide-container">
-                            <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
+                    <>
+                        <div className="tour-body">
+                            <div className="slide-container">
+                                <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
 
-                            <div className="slide">
-                                <div className="container-first-image">
-                                    <img className="main-image" alt={partyImages[currentImage].description} src={partyImages[currentImage].imageUrl} />
-                                    <p className="photo-description">
-                                        {   currentLanguage === 'EN-US'
-                                            ? partyImages[currentImage].englishDescription
-                                            : partyImages[currentImage].portugueseDescription
-                                        }
-                                    </p>
+                                <div className="slide">
+                                    <div className="container-first-image">
+                                        <img
+                                            className="main-image"
+                                            alt={firstImageAlt}
+                                            src={firstImage.imageUrl}
+                                            onClick={() => handleImageClick(firstImage)}
+                                        />
+                                        <p className="photo-description">
+                                            {   currentLanguage === 'EN-US'
+                                                ? firstImage.englishDescription
+                                                : firstImage.portugueseDescription
+                                            }
+                                        </p>
+                                    </div>
+
+                                    <div className="container-second-image">
+                                        <img
+                                            className="main-image"
+                                            alt={secondImageAlt}
+                                            src={secondImage.imageUrl}
+                                            onClick={() => handleImageClick(secondImage)}
+                                        />
+                                        <p className="photo-description">
+                                            {   currentLanguage === 'EN-US'
+                                                ? secondImage.englishDescription
+                                                : secondImage.portugueseDescription
+                                            }
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <div className="container-second-image">
-                                    <img className="main-image" alt={partyImages[currentImage + 1].description} src={partyImages[currentImage + 1].imageUrl} />
-                                    <p className="photo-description">
-                                        {   currentLanguage === 'EN-US'
-                                            ? partyImages[currentImage + 1].englishDescription
-                                            : partyImages[currentImage + 1].portugueseDescription
-                                        }
-                                    </p>
-                                </div>
+                                <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
                             </div>
 
-                            <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
+                            <div className="images-catalog">
+                                <h1>Veja mais fotos</h1>
+                                {renderCatalogImages(currentLanguage)}
+                            </div>
                         </div>
+                    
+                        {   overlayImage !== '' &&
+                            <div className="image-overlay">
+                                <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
+                                <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
 
-                        <div className="images-catalog">
-                            <h1>Veja mais fotos</h1>
-                            {renderCatalogImages(currentLanguage)}
-                        </div>
-                    </div>
+                                <img src={overlayImage.imageUrl}/>
+                            </div>
+                        }
+                    </>
                 )
             }}
         </Consumer>
