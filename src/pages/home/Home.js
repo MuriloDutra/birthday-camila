@@ -20,6 +20,7 @@ function Home() {
       songPlayer.currentTime = 80
     }, 5000)
   }, [])
+  
 
   return (
     <Consumer>

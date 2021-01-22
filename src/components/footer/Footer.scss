@@ -18,6 +18,12 @@
     }
 }
 
+@media(max-width: 1024px){
+    .links-container{
+        padding: 2% 0% 2% 20%;
+    }
+}
+
 @media(max-width: 767px){
     .links-container{
         padding: 0%;

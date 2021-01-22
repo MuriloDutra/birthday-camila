@@ -41,11 +41,30 @@
     }
 }
 
+@media(max-width: 1024px){
+    .languages-container{
+        top: 2%;
+        width: 14%;
+        height: 40px;
+
+        .selected-language{
+            font-size: 30px;
+        }
+
+        .options{
+            p{
+                font-size: 30px;
+            }
+        }
+    }
+}
+
 @media(max-width: 767px){
     .languages-container{
         right: 2%;
-        width: 20%;
+        width: 24%;
         top: 2%;
+        height: 30px;
 
         .selected-language{
             font-size: 20px;

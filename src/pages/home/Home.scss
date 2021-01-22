@@ -57,6 +57,21 @@
     }
 }
 
+@media(max-width: 1024px){
+    .main-content{
+        display: grid;
+        padding-top: 15%;
+
+        .main-photo-container, .main-text-container{
+            width: 100%;
+        }
+    }
+
+    .main-video-container{
+        margin-top: 55%;
+    }
+}
+
 @media(max-width: 767px){
     .main-content{
         display: grid;
@@ -68,7 +83,7 @@
     
             .main-image{
                 width: 100%;
-                margin-left: 3%;
+                margin-left: 0%;
             }
         }
 
@@ -84,5 +99,9 @@
                 font-size: 30px;
             }
         }
+    }
+
+    .main-video-container{
+        margin-top: 0%;
     }
 }

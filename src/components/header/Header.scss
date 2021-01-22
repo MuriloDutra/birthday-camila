@@ -34,12 +34,29 @@
     }
 }
 
+@media(max-width: 1024px){
+    .header{
+        
+        .icon-container{
+            right: 20%;
+            top: 25%;
+            
+            .icon{
+                font-size: 40px;
+            }   
+        }
+    }
+}
+
 @media(max-width: 767px){
     .header{
-        height: 50px;
+        height: 60px;
+        padding: 0px;
+        margin-top: -2%;
 
         h1{
             font-size: 35px;
+            margin-left: 0%;
         }
 
         .icon-container{
