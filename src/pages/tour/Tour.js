@@ -39,9 +39,8 @@ function Tour(props){
                 const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
                 const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
 
-
                 return (
-                    <div className="image-row">
+                    <div className="image-row" key={image.id}>
                         <div className="container-first-image">
                             <img
                                 className="normal-image"
@@ -144,6 +143,11 @@ function Tour(props){
                                 <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
                             </div>
 
+                            {/*<div className="send-photos-container">
+                                <h1>Tem fotos da festa? Mande pra gente</h1>
+                                <button onClick={() => window.open('mailto: murilo.alves@watermelontecnologia.com')}>Enviar</button>
+                            </div>*/}
+                            
                             <div className="images-catalog">
                                 <h1>Veja mais fotos</h1>
                                 {renderCatalogImages(currentLanguage)}
@@ -154,8 +158,10 @@ function Tour(props){
                             <div className="image-overlay">
                                 <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
                                 <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
-
-                                <img src={overlayImage.imageUrl}/>
+                                <img
+                                    alt={currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription}
+                                    src={overlayImage.imageUrl}
+                                />
                             </div>
                         }
                     </>

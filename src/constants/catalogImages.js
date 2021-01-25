@@ -3,37 +3,43 @@ const catalogImages = [
         imageUrl: require('../assets/catalogImages/harry01.jpg').default,
         portugueseDescription: 'Harry palestrando',
         englishDescription: 'Harry speaking',
-        type: 'jpg'
+        type: 'jpg',
+        id: 5
     },
     {
         imageUrl: require('../assets/catalogImages/harry02.jpg').default,
         portugueseDescription: 'Harry cowboy',
         englishDescription: 'Country boy',
-        type: 'jpg'
+        type: 'jpg',
+        id: 6
     },
     {
         imageUrl: require('../assets/catalogImages/harry03.jpg').default,
         portugueseDescription: 'Harry na aglomeração',
         englishDescription: `Harry does not respect the quarantine`,
-        type: 'jpg'
+        type: 'jpg',
+        id: 7
     },
     {
         imageUrl: require('../assets/catalogImages/harry04.png').default,
         portugueseDescription: 'Harry com um desconhecido',
         englishDescription: 'Harry with a stranger',
-        type: 'png'
+        type: 'png',
+        id: 8
     },
     {
         imageUrl: require('../assets/catalogImages/harry05.jpg').default,
         portugueseDescription: 'Harry com a Taylor Swift',
         englishDescription: 'Harry with a bad bitch',
-        type: 'jpg'
+        type: 'jpg',
+        id: 9
     },
     {
         imageUrl: require('../assets/catalogImages/harry06.jpg').default,
         portugueseDescription: 'Harry com um cabelo e óculos top',
         englishDescription: 'Great hair and glasses',
-        type: 'jpg'
+        type: 'jpg',
+        id: 10
     }
 ]
 
