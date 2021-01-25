@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Header from '../../components/header/Header';
 import MainImage from '../../assets/MainImage.jpg'
 import '../../global.scss'
 import './Home.scss'
@@ -14,10 +13,12 @@ function Home() {
     document.title = 'Camila Araújo'
 
     setTimeout(() => {
-      const songPlayer = document.getElementById('song-player')
-      songPlayer.play();
-      songPlayer.muted = false;
-      songPlayer.currentTime = 80
+      if(window.location.pathname === '/'){
+        const songPlayer = document.getElementById('song-player')
+        songPlayer.play();
+        songPlayer.muted = false;
+        songPlayer.currentTime = 80
+      }
     }, 5000)
   }, [])
   
