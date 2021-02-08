@@ -5,11 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
 import catalogImages from '../../constants/catalogImages'
 import Consumer from '../../context/ApplicationContext'
+import { sendPhotos } from '../../services/request'
 
 
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
     const [overlayImage, setOverlayImage] = useState('')
+    const [photos, setPhotos] = useState([])
 
 
     function handleSlide(type){
@@ -92,6 +94,36 @@ function Tour(props){
     }
 
 
+    function toBase64(file){
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+      
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => {reject(error)};
+        });
+    }
+
+
+    function handleSubmit(){
+        const newPhotos = photos.map((photo, index) => {
+            toBase64(photo).then(file => {
+                console.log('FILE: ', file)
+                return file
+            })
+        })
+
+        let body = {
+            "imageUrl": newPhotos[0],
+        }
+
+        console.log('body: ', body)
+        sendPhotos(body)
+            .then(data => console.log('DATA: ', data))
+            .catch(error => console.log('ERRROR: ', error))
+    }
+
+
     return (
         <Consumer>
             {   context => {
@@ -143,10 +175,13 @@ function Tour(props){
                                 <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
                             </div>
 
-                            {/*<div className="send-photos-container">
+                            <div className="send-photos-container">
                                 <h1>Tem fotos da festa? Mande pra gente</h1>
-                                <button onClick={() => window.open('mailto: murilo.alves@watermelontecnologia.com')}>Enviar</button>
-                            </div>*/}
+                                <div className="button-container">
+                                    <input type="file" onChange={value => photos.push(value.target.files[0])} />
+                                    <button onClick={handleSubmit}>Enviar</button>
+                                </div>
+                            </div>
                             
                             <div className="images-catalog">
                                 <h1>Veja mais fotos</h1>
