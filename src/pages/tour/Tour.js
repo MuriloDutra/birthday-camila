@@ -97,7 +97,7 @@ function Tour(props){
     function toBase64(file){
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-      
+        
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => {reject(error)};
@@ -105,22 +105,24 @@ function Tour(props){
     }
 
 
+    function convertImagesToBase64(){
+        let base64 = photos.map((photo, index) => toBase64(photo).then(newPhoto => newPhoto))
+        return Promise.all(base64)
+    }
+
+
     function handleSubmit(){
-        const newPhotos = photos.map((photo, index) => {
-            toBase64(photo).then(file => {
-                console.log('FILE: ', file)
-                return file
+        convertImagesToBase64()
+            .then(convertedImages => {
+                console.log("convertedImages: ", convertedImages)
+                let body = {
+                    "imageUrl": convertedImages[0],
+                }
+    
+                sendPhotos(body)
+                    .then(data => console.log('DATA: ', data))
+                    .catch(error => console.log('ERRROR: ', error))
             })
-        })
-
-        let body = {
-            "imageUrl": newPhotos[0],
-        }
-
-        console.log('body: ', body)
-        sendPhotos(body)
-            .then(data => console.log('DATA: ', data))
-            .catch(error => console.log('ERRROR: ', error))
     }
 
 
@@ -178,7 +180,7 @@ function Tour(props){
                             <div className="send-photos-container">
                                 <h1>Tem fotos da festa? Mande pra gente</h1>
                                 <div className="button-container">
-                                    <input type="file" onChange={value => photos.push(value.target.files[0])} />
+                                    <input type="file" onChange={value => setPhotos([...photos, value.target.files[0]])} />
                                     <button onClick={handleSubmit}>Enviar</button>
                                 </div>
                             </div>

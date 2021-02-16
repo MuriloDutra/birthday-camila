@@ -15,7 +15,7 @@ axiosInstance.interceptors.response.use(
     response => response,
     error => {
         console.log('Error: ', error)
-        console.log('Error response: ', error)
+        console.log('Error response: ', error.response)
     }
 )
 
