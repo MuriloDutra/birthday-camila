@@ -116,7 +116,7 @@ function Tour(props){
             .then(convertedImages => {
                 console.log("convertedImages: ", convertedImages)
                 let body = {
-                    "imageUrl": convertedImages[0],
+                    "imageBase64": convertedImages[0],
                 }
     
                 sendPhotos(body)
