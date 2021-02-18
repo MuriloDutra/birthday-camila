@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './components/header/Header'
+import Admin from './pages/admin/Admin'
 import ErrorPage from './pages/errorPage/ErrorPage'
 import Home from './pages/home/Home'
 import Tour from './pages/tour/Tour'
@@ -19,6 +20,10 @@ function Router(props){
 
                     <Route exact path="/photos">
                         <Tour />
+                    </Route>
+
+                    <Route exact path="/admin">
+                        <Admin />
                     </Route>
 
                     <Route path="*">

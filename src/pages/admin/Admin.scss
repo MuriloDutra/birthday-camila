@@ -1,0 +1,33 @@
+.admin-body{
+    width: 100%;
+    padding-top: 8%;
+
+    .login-container{
+        width: 50%;
+        margin-top: 10%;
+        display: grid;
+        margin-left: 43%;
+
+        label{
+            width: fit-content;
+            margin-right: 13%;
+            color: white;
+            font-size: 18px;
+        }
+
+        input{
+            height: 20px;
+            width: 30%;
+            margin: 5px 0px 25px 0px;
+        }
+
+        button{
+            width: 10%;
+            border: none;
+            padding: 5px;
+            background-color: #e87f8d;
+            color: black;
+            font-size: 18px;
+        }
+    }
+}
