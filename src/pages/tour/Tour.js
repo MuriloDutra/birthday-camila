@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import partyImages from '../../constants/slideImages'
-import { faChevronLeft, faChevronRight, faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faTimes, faDownload, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
 import catalogImages from '../../constants/catalogImages'
@@ -114,11 +114,8 @@ function Tour(props){
     function handleSubmit(){
         convertImagesToBase64()
             .then(convertedImages => {
-                console.log("convertedImages: ", convertedImages)
-                let body = {
-                    "imageBase64": convertedImages[0],
-                }
-    
+                let body = {"imagesBase64": convertedImages}
+                
                 sendPhotos(body)
                     .then(data => console.log('DATA: ', data))
                     .catch(error => console.log('ERRROR: ', error))
@@ -180,7 +177,20 @@ function Tour(props){
                             <div className="send-photos-container">
                                 <h1>Tem fotos da festa? Mande pra gente</h1>
                                 <div className="button-container">
-                                    <input type="file" onChange={value => setPhotos([...photos, value.target.files[0]])} />
+                                    {   photos.length > 0 &&
+                                        <>
+                                            <p className="selected-photos-title">Fotos selecionadas</p>
+                                            <div className="selected-photos-container">
+                                                { photos.map((photo, index) => (
+                                                    <p className="selected-photo">
+                                                        {index + 1} - {photo.name}
+                                                        <FontAwesomeIcon className="check-circle" icon={faCheckCircle} />
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        </>
+                                    }
+                                    <input type="file" onChange={value => photos.length < 10 && setPhotos([...photos, value.target.files[0]])} />
                                     <button onClick={handleSubmit}>Enviar</button>
                                 </div>
                             </div>

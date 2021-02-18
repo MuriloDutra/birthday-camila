@@ -66,12 +66,36 @@
 
         h1{
             color: white;
-            font-size: 30px;
+            font-size: 40px;
             margin: 0px;
         }
 
         .button-container{
             display: grid;
+
+            .selected-photos-title{
+                margin: 20px 0px 0px 0px;
+                color: #e87f8d;
+                font-size: 22px;
+            }
+
+            .selected-photos-container{
+                border: #e87f8d solid;
+                padding: 0px 10px 0px 10px;
+                display: block;
+                margin-bottom: 20px;
+                height: 100px;
+                overflow: auto;
+
+                .selected-photo{
+                    color: white;
+
+                    .check-circle{
+                        color: green;
+                        margin: 0px 5px 0px 5px;
+                    }
+                }
+            }
 
             input{
                 margin: 10px 0px 0px 0px;
@@ -98,7 +122,7 @@
             color: white;
             text-align: left;
             margin-left: 5%;
-            font-size: 50px;
+            font-size: 40px;
         }
 
         .image-row{
