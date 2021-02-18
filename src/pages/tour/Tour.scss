@@ -80,11 +80,9 @@
             }
 
             .selected-photos-container{
-                border: #e87f8d solid;
                 padding: 0px 10px 0px 10px;
-                display: block;
+                display: flex;
                 margin-bottom: 20px;
-                height: 100px;
                 overflow: auto;
 
                 .selected-photo{

@@ -11,7 +11,9 @@ import { sendPhotos } from '../../services/request'
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
     const [overlayImage, setOverlayImage] = useState('')
-    const [photos, setPhotos] = useState([])
+    const [selectedPhotos, setSelectedPhotos] = useState([])
+    const [highlightPhotos, setHighlightPhotos] = useState([])
+    const [otherPhotos, setOtherPhotos] = useState([])
 
 
     function handleSlide(type){
@@ -106,7 +108,7 @@ function Tour(props){
 
 
     function convertImagesToBase64(){
-        let base64 = photos.map((photo, index) => toBase64(photo).then(newPhoto => newPhoto))
+        let base64 = selectedPhotos.map((photo, index) => toBase64(photo).then(newPhoto => newPhoto))
         return Promise.all(base64)
     }
 
@@ -177,11 +179,11 @@ function Tour(props){
                             <div className="send-photos-container">
                                 <h1>Tem fotos da festa? Mande pra gente</h1>
                                 <div className="button-container">
-                                    {   photos.length > 0 &&
+                                    {   selectedPhotos.length > 0 &&
                                         <>
                                             <p className="selected-photos-title">Fotos selecionadas</p>
                                             <div className="selected-photos-container">
-                                                { photos.map((photo, index) => (
+                                                { selectedPhotos.map((photo, index) => (
                                                     <p className="selected-photo">
                                                         {index + 1} - {photo.name}
                                                         <FontAwesomeIcon className="check-circle" icon={faCheckCircle} />
@@ -190,7 +192,7 @@ function Tour(props){
                                             </div>
                                         </>
                                     }
-                                    <input type="file" onChange={value => photos.length < 10 && setPhotos([...photos, value.target.files[0]])} />
+                                    <input type="file" onChange={value => selectedPhotos.length < 5 && setSelectedPhotos([...selectedPhotos, value.target.files[0]])} />
                                     <button onClick={handleSubmit}>Enviar</button>
                                 </div>
                             </div>
