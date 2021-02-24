@@ -19,6 +19,11 @@ axiosInstance.interceptors.response.use(
     }
 )
 
+export const login = (body) => {
+    return axiosInstance.post('login', body)
+        .then(response => response.data)
+}
+
 export const getPhotos = () => {
     return axiosInstance.get('getPhotos')
         .then(response => response.data)
