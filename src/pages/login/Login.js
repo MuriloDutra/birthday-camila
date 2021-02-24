@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import Consumer from '../../context/ApplicationContext'
 import md5 from 'md5'
-import './Admin.scss'
+import './Login.scss'
 import { login } from '../../services/request'
 import { withRouter } from 'react-router-dom'
 
 
-function Admin(props){
+function Login(props){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
+    const { history } = props
 
 
     function handleButton(){
@@ -28,7 +29,7 @@ function Admin(props){
         login(body)
             .then(data => {        
                 sessionStorage.setItem('token', data.token)
-                console.log('props: ', props)
+                history.push('/dashboard')
             })
             .catch(error => console.log('Error: ', error))
     }
@@ -40,7 +41,7 @@ function Admin(props){
                 const { loginPage } = context.language
                 
                 return (
-                    <div className="admin-body">
+                    <div className="login-body">
                         <div className="login-container">
                             <label>E-mail</label>
                             <input
@@ -70,4 +71,4 @@ function Admin(props){
 }
 
 
-export default withRouter(Admin)
+export default withRouter(Login)
