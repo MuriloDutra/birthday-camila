@@ -8,7 +8,7 @@ function Footer(props){
     return (
         <Consumer>
             {context => {
-                const { footer } = context.language
+                const { footer } = context.language.homePage
 
                 return (
                     <div className="links-container">

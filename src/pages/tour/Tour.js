@@ -129,6 +129,7 @@ function Tour(props){
         <Consumer>
             {   context => {
                 const { currentLanguage } = context
+                const { photosPage } = context.language
 
                 const firstImage = partyImages[currentImage]
                 const secondImage = partyImages[currentImage + 1]
@@ -177,11 +178,11 @@ function Tour(props){
                             </div>
 
                             <div className="send-photos-container">
-                                <h1>Tem fotos da festa? Mande pra gente</h1>
+                                <h1>{photosPage.sendPhotosTitle}</h1>
                                 <div className="button-container">
                                     {   selectedPhotos.length > 0 &&
                                         <>
-                                            <p className="selected-photos-title">Fotos selecionadas</p>
+                                            <p className="selected-photos-title">{photosPage.selectedPhotosTitle}</p>
                                             <div className="selected-photos-container">
                                                 { selectedPhotos.map((photo, index) => (
                                                     <p className="selected-photo">
@@ -193,12 +194,12 @@ function Tour(props){
                                         </>
                                     }
                                     <input type="file" onChange={value => selectedPhotos.length < 5 && setSelectedPhotos([...selectedPhotos, value.target.files[0]])} />
-                                    <button onClick={handleSubmit}>Enviar</button>
+                                    <button onClick={handleSubmit}>{photosPage.button}</button>
                                 </div>
                             </div>
                             
                             <div className="images-catalog">
-                                <h1>Veja mais fotos</h1>
+                                <h1>{photosPage.photosTitle}</h1>
                                 {renderCatalogImages(currentLanguage)}
                             </div>
                         </div>

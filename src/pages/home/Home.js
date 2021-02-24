@@ -26,7 +26,7 @@ function Home() {
   return (
     <Consumer>
       { context => {
-        const { language } = context
+        const { homePage } = context.language
         
         return (
           <div id="app" className="App">
@@ -35,9 +35,9 @@ function Home() {
                 <img alt="Harry Styles" src={MainImage} className="main-image"/>
               </div>
               <div className="main-text-container">
-                <h1>{language.firstTitle}</h1>
-                <h3>{language.secondTitle}</h3>
-                <h1>{language.thirdTitle}</h1>
+                <h1>{homePage.firstTitle}</h1>
+                <h3>{homePage.secondTitle}</h3>
+                <h1>{homePage.thirdTitle}</h1>
               </div>
             </div>
             <div className="main-video-container">
