@@ -3,10 +3,11 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './components/header/Header'
 import Feedback from './components/feedback/Feedback'
 
-import Admin from './pages/admin/Admin'
+import Login from './pages/login/Login'
 import ErrorPage from './pages/errorPage/ErrorPage'
 import Home from './pages/home/Home'
 import Tour from './pages/tour/Tour'
+import Dashboard from './pages/dashboard/Dashboard'
 
 
 function Router(props){
@@ -47,8 +48,12 @@ function Router(props){
                         <Tour toggleFeedback={toggleFeedback} />
                     </Route>
 
-                    <Route exact path="/admin">
-                        <Admin toggleFeedback={toggleFeedback} />
+                    <Route exact path="/login">
+                        <Login toggleFeedback={toggleFeedback} />
+                    </Route>
+
+                    <Route exact path="/dashboard">
+                        <Dashboard toggleFeedback={toggleFeedback} />
                     </Route>
 
                     <Route path="*">
