@@ -8,7 +8,7 @@ import { sendPhotos } from '../../services/request'
 
 function SendPhotosContainer(props){
     const [selectedPhotos, setSelectedPhotos] = useState([])
-    const { dashboardVersion } = props
+    const { dashboardVersion, toggleFeedback } = props
 
 
     function toBase64(file){
@@ -29,6 +29,11 @@ function SendPhotosContainer(props){
 
 
     function handleSubmit(){
+        if(selectedPhotos.length === 0){
+            toggleFeedback(true, 'Selecione pelo menos uma imagem.')
+            return
+        }
+
         convertImagesToBase64()
             .then(convertedImages => {
                 let body = {"imagesBase64": convertedImages}
@@ -56,7 +61,7 @@ function SendPhotosContainer(props){
                         <div className="button-container">
                             {   selectedPhotos.length > 0 &&
                                 <>
-                                    <p className="selected-photos-title">{sendPhotosContainer.selectedPhotosTitle}: {selectedPhotos.length} - 5</p>
+                                    <p className="selected-photos-title">{sendPhotosContainer.selectedPhotosTitle}: {selectedPhotos.length} - 10</p>
                                     <div className="selected-photos-container">
                                         {   selectedPhotos.map((photo, index) => (
                                             <p className="selected-photo">
@@ -67,7 +72,7 @@ function SendPhotosContainer(props){
                                     </div>
                                 </>
                             }
-                            <input type="file" onChange={value => selectedPhotos.length < 5 && setSelectedPhotos([...selectedPhotos, value.target.files[0]])} />
+                            <input type="file" onChange={value => selectedPhotos.length < 10 && setSelectedPhotos([...selectedPhotos, value.target.files[0]])} />
                             <button onClick={handleSubmit}>{sendPhotosContainer.button}</button>
                         </div>
                     </div>
