@@ -1,0 +1,51 @@
+.send-photos-container{
+    padding: 1% 0% 0% 5%;
+    display: block;
+
+    h1{
+        color: white;
+        font-size: 40px;
+        margin: 0px;
+    }
+
+    .button-container{
+        display: grid;
+
+        .selected-photos-title{
+            margin: 20px 0px 0px 0px;
+            color: #e87f8d;
+            font-size: 22px;
+        }
+
+        .selected-photos-container{
+            padding: 0px 10px 0px 10px;
+            display: flex;
+            margin-bottom: 20px;
+            overflow: auto;
+
+            .selected-photo{
+                color: white;
+
+                .check-circle{
+                    color: green;
+                    margin: 0px 5px 0px 5px;
+                }
+            }
+        }
+
+        input{
+            margin: 10px 0px 0px 0px;
+            color: white;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 15px;
+            width: 22%;
+        }
+
+        button{
+            margin-top: 20px;
+            width: fit-content;
+            padding: 5px;
+            font-size: 18px;
+        }
+    }
+}

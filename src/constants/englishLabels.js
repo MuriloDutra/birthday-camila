@@ -11,15 +11,20 @@ export const englishLabels = {
         }
     },
     photosPage: {
-        sendPhotosTitle: 'Did you take pictures of the party? Send them to us!',
-        button: 'Send',
         photosTitle: 'See more photos of the party',
-        selectedPhotosTitle: 'Selected photos'
     },
     loginPage: {
         passWord: 'password',
         emailPlaceholder: 'example@example.com',
         button: 'Sign in'
+    },
+    components:{
+        sendPhotosContainer: {
+            sendPhotosTitle: 'Did you take pictures of the party? Send them to us!',
+            button: 'Send',
+            selectedPhotosTitle: 'Selected photos',
+            dashboardTitle: 'You can upload some photos here!'
+        }
     },
     errors:{
         error_to_load_photos: 'It was not possible to recover the photos.',
@@ -29,6 +34,7 @@ export const englishLabels = {
         error_to_load_highlight_photos: 'It was not possible to recover the HIGHLIGHT photos.',
         error_to_post_new_photos: 'It was not possible to save new photos.',
         error_to_update_photo: 'It was not possible to update the photo.',
-        error_to_delete_photo: 'It was not possible to delete the photo.'
+        error_to_delete_photo: 'It was not possible to delete the photo.',
+        user_not_found: 'User not found.',
     }
 }

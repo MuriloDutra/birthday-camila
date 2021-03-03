@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
 import './Dashboard.scss'
 
 
@@ -22,6 +23,8 @@ function Dashboard(props){
 
     return (
         <div className="dashboard-body">
+            <SendPhotosContainer dashboardVersion/>
+
             <div className="main-menu">
                 <p onClick={() => setSelectedTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>Aprovadas</p>
                 <p onClick={() => setSelectedTab('disapproved')} className={selectedTab === 'disapproved' && 'selected-tab'}>Desaprovadas</p>

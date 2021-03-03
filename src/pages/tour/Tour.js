@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import partyImages from '../../constants/slideImages'
-import { faChevronLeft, faChevronRight, faTimes, faDownload, faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
 import catalogImages from '../../constants/catalogImages'
 import Consumer from '../../context/ApplicationContext'
-import { sendPhotos } from '../../services/request'
+import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
 
 
 function Tour(props){
@@ -95,36 +95,7 @@ function Tour(props){
         document.body.removeChild(downloadLink)
     }
 
-
-    function toBase64(file){
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-        
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => {reject(error)};
-        });
-    }
-
-
-    function convertImagesToBase64(){
-        let base64 = selectedPhotos.map((photo, index) => toBase64(photo).then(newPhoto => newPhoto))
-        return Promise.all(base64)
-    }
-
-
-    function handleSubmit(){
-        convertImagesToBase64()
-            .then(convertedImages => {
-                let body = {"imagesBase64": convertedImages}
-                
-                sendPhotos(body)
-                    .then(data => console.log('DATA: ', data))
-                    .catch(error => console.log('ERRROR: ', error))
-            })
-    }
-
-
+    
     return (
         <Consumer>
             {   context => {
@@ -177,26 +148,7 @@ function Tour(props){
                                 <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
                             </div>
 
-                            <div className="send-photos-container">
-                                <h1>{photosPage.sendPhotosTitle}</h1>
-                                <div className="button-container">
-                                    {   selectedPhotos.length > 0 &&
-                                        <>
-                                            <p className="selected-photos-title">{photosPage.selectedPhotosTitle}</p>
-                                            <div className="selected-photos-container">
-                                                { selectedPhotos.map((photo, index) => (
-                                                    <p className="selected-photo">
-                                                        {index + 1} - {photo.name}
-                                                        <FontAwesomeIcon className="check-circle" icon={faCheckCircle} />
-                                                    </p>
-                                                ))}
-                                            </div>
-                                        </>
-                                    }
-                                    <input type="file" onChange={value => selectedPhotos.length < 5 && setSelectedPhotos([...selectedPhotos, value.target.files[0]])} />
-                                    <button onClick={handleSubmit}>{photosPage.button}</button>
-                                </div>
-                            </div>
+                            <SendPhotosContainer />
                             
                             <div className="images-catalog">
                                 <h1>{photosPage.photosTitle}</h1>
