@@ -4,13 +4,15 @@ import md5 from 'md5'
 import './Login.scss'
 import { login } from '../../services/request'
 import { withRouter } from 'react-router-dom'
+import Lottie from 'lottie-react-web'
 
 
 function Login(props){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
-    const { history } = props
+    const { history, toggleFeedback } = props
 
 
     function handleButton(){
@@ -26,12 +28,17 @@ function Login(props){
 
         let body = {"email": email, "password": md5(password)}
 
+        setLoading(true)
+
         login(body)
             .then(data => {        
                 sessionStorage.setItem('token', data.token)
                 history.push('/dashboard')
             })
-            .catch(error => console.log('Error: ', error))
+            .catch(error => {
+                toggleFeedback(true, 'Erro ao fazer login.')
+            })
+            .finally(() => setLoading(false))
     }
 
 
@@ -61,7 +68,21 @@ function Login(props){
                             {   errorMessage && 
                                 <p className="error-message">{errorMessage}</p>
                             }
-                            <button onClick={handleButton}>{loginPage.button}</button>
+
+                            {   loading &&
+                                <Lottie
+                                    width="5%"
+                                    height="100%"
+                                    style={{margin: 0, marginBottom: 10}}
+                                    options={{animationData: require('../../assets/animations/loading.json')}}
+                                />
+                            }
+
+                            {   !loading &&
+                                <button onClick={handleButton}>
+                                    {loginPage.button}
+                                </button>
+                            }
                         </div>
                     </div>
                 )
