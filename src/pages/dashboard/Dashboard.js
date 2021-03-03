@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
+import { getApprovedPhotos, getUnapprovedPhotos } from '../../services/request'
 import './Dashboard.scss'
 
 
 function Dashboard(props){
-    const [selectedTab, setSelectedTab] = useState('approved')//approved, disapproved, waitingEvaluation
+    const [photos, setPhotos] = useState([])
+    const [selectedTab, setSelectedTab] = useState('approved')//approved, waitingEvaluation
+    const {toggleFeedback } = props
 
 
     useEffect(() => {
@@ -17,19 +20,31 @@ function Dashboard(props){
 
 
     useEffect(() => {
-        console.log('selectedTab: ', selectedTab)
+        if(selectedTab === 'waitingEvaluation'){
+            getUnapprovedPhotos().then(data => setPhotos(data))
+        }else{
+            getApprovedPhotos().then(data => setPhotos(data))
+        }
     }, [selectedTab])
 
-
+    console.log(photos)
     return (
         <div className="dashboard-body">
-            <SendPhotosContainer dashboardVersion/>
+            <SendPhotosContainer dashboardVersion toggleFeedback={toggleFeedback} />
 
             <div className="main-menu">
-                <p onClick={() => setSelectedTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>Aprovadas</p>
-                <p onClick={() => setSelectedTab('disapproved')} className={selectedTab === 'disapproved' && 'selected-tab'}>Desaprovadas</p>
-                <p onClick={() => setSelectedTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>Esperando avaliação</p>
+                <p onClick={() => setSelectedTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
+                    Aprovadas
+                </p>
+                
+                <p onClick={() => setSelectedTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
+                    Esperando avaliação
+                </p>
             </div>
+
+            {   photos.length === 0 &&
+                <p className="warning">Nenhuma foto foi encontrada.</p>
+            }
         </div>
     )
 }
