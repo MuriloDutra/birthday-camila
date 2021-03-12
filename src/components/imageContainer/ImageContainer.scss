@@ -1,0 +1,58 @@
+.image-container{
+    display: flex;
+
+    img {
+        width: 50%;
+        margin: 10px 20px 5% 20px;
+        cursor: pointer;
+    }
+
+    .image-form{
+        display: grid;
+        width: 50%;
+        height: 100%;
+        padding-top: 1%;
+
+        .icon-name{
+            color: white;
+            font-size: 25px;
+        }
+
+        .icon{
+            color: white;
+            margin-left: 5px;
+        }
+
+        label{
+            color: white;
+            font-size: 20px;
+        }
+
+        input{
+            margin: 10px 0px 20px 0px;
+            height: 20px;
+        }
+
+        button{
+            width: 25%;
+            margin: 0px 10px 20px 0px;
+            font-size: 18px;
+            border: 0px;
+            cursor: pointer;
+        }
+
+        .check-button{
+            background-color: green;
+            color: white;
+        }
+
+        .uncheck-button{
+            background-color: red;
+            color: white;
+        }
+
+        p{
+            margin: 10px 0px 5px 0px;
+        }
+    }
+}
