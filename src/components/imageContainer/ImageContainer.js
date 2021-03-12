@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Consumer from '../../context/ApplicationContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle, faCheckCircle, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle, faCheckCircle, faTimes, faTrash, faSave, faStar } from '@fortawesome/free-solid-svg-icons'
 import './ImageContainer.scss'
-import { approvePhotoById, unapprovePhotoById } from '../../services/request'
+import { approvePhotoById, unapprovePhotoById, deletePhoto, updatePhoto, highlightPhotoById, unhighlightPhotoById } from '../../services/request'
 
 
 function ImageContainer(props){
@@ -40,11 +40,78 @@ function ImageContainer(props){
     }
 
 
+    function deleteImage(imageId){
+        deletePhoto(imageId)
+            .then(data => {
+                console.log('Data: ', data)
+                toggleFeedback(false, 'Image success')
+                callback()
+            })
+            .catch(error => {
+                toggleFeedback(true, 'Image error')
+            })
+    }
+
+
+    function updateImage(imageId){
+        if(englishDescription === '' && portugueseDescription === '' && imageName === ''){
+            toggleFeedback(true, 'Preencha pelo menos um campo para salvar a foto.')
+            return
+        }
+
+        let body = {
+            "englishDescription": englishDescription,
+            "portugueseDescription": portugueseDescription,
+            "imageName": imageName
+        }
+
+        updatePhoto(imageId, body)
+            .then(data => {
+                console.log('Data: ', data)
+                toggleFeedback(false, 'Image success')
+                callback()
+
+                setEnglishDescription('')
+                setPortugueseDescription('')
+                setImageName('')
+            })
+            .catch(error => {
+                toggleFeedback(true, 'Image error')
+            })
+    }
+
+
+    function highlightImage(imageId){
+        highlightPhotoById(imageId)
+            .then(data => {
+                console.log('Data: ', data)
+                toggleFeedback(false, 'Image success')
+                callback()
+            })
+            .catch(error => {
+                toggleFeedback(true, 'Image error')
+            })
+    }
+
+
+    function unhighlightImage(imageId){
+        unhighlightPhotoById(imageId)
+            .then(data => {
+                console.log('Data: ', data)
+                toggleFeedback(false, 'Image success')
+                callback()
+            })
+            .catch(error => {
+                toggleFeedback(true, 'Image error')
+            })
+    }
+
+
     return (
         <Consumer>
             {   context => {
                 const { imageContainer } = context.language.components
-
+                
                 return (
                     <div key={photo.id} className="image-container">
                         <img src={photo.imageUrl} />
@@ -59,28 +126,56 @@ function ImageContainer(props){
                             <input value={imageName} onChange={(text) => setImageName(text.target.value)} />
 
                             <div>
-                                <button>{imageContainer.saveButton}</button>
-                                {   approvedPhotos && 
-                                    <button className="check-button" onClick={() => approveImage(photo.id)}>
-                                        {imageContainer.approveButton}
-                                        <FontAwesomeIcon icon={faCheckCircle} className="icon" />
-                                    </button>
-                                }
+                                <button className="save-button" onClick={() => updateImage(photo.id)}>
+                                    {imageContainer.saveButton}
+                                    <FontAwesomeIcon icon={faSave} className="icon" />
+                                </button>
 
                                 {   unapprovedPhotos && 
-                                    <button className="uncheck-button" onClick={() => unapproveImage(photo.id)}>
-                                        {imageContainer.unapproveButton}
-                                        <FontAwesomeIcon icon={faTimes} className="icon" />
-                                    </button>
+                                    <>
+                                        <button className="check-button" onClick={() => approveImage(photo.id)}>
+                                            {imageContainer.approveButton}
+                                            <FontAwesomeIcon icon={faCheckCircle} className="icon" />
+                                        </button>
+
+                                        <button className="trash-button" onClick={() => deleteImage(photo.id)}>
+                                            {imageContainer.deleteButton}
+                                            <FontAwesomeIcon icon={faTrash} className="icon" />
+                                        </button>
+                                    </>
+                                }
+
+                                {   approvedPhotos &&
+                                    <>
+                                        <button className="uncheck-button" onClick={() => unapproveImage(photo.id)}>
+                                            {imageContainer.unapproveButton}
+                                            <FontAwesomeIcon icon={faTimes} className="icon" />
+                                        </button>
+
+                                        {   photo.highlightImage === 0 &&
+                                            <button className="star-button" onClick={() => highlightImage(photo.id)}>
+                                                {imageContainer.highlightImageButton}
+                                                <FontAwesomeIcon icon={faStar} className="icon" />
+                                            </button>
+                                        }
+
+
+                                        {   photo.highlightImage === 1 &&
+                                            <button className="unstar-button" onClick={() => unhighlightImage(photo.id)}>
+                                                {imageContainer.unhighlightImageButton}
+                                                <FontAwesomeIcon icon={faStar} className="icon" />
+                                            </button>
+                                        }
+                                    </>
                                 }
                             </div>
 
                             <FontAwesomeIcon icon={faInfoCircle} className='icon-name' />
-                            <p>{`${imageContainer.englishDescription}: ${photo.englishDescription || '-'}`}</p>
+                            <p>{imageContainer.englishDescription}: <span>{photo.englishDescription || '-'}</span></p>
 
-                            <p>{`${imageContainer.portugueseDescription}: ${photo.portugueseDescription || '-'}`}</p>
+                            <p>{imageContainer.portugueseDescription}: <span>{photo.portugueseDescription || '-'}</span></p>
 
-                            <p>{`${imageContainer.imageName}: ${photo.portugueseDescription || '-'}`}</p>
+                            <p>{imageContainer.imageName}: <span>{photo.imageName || '-'}</span></p>
                         </div>
                     </div>
                 )

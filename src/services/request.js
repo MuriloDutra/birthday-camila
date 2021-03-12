@@ -73,6 +73,16 @@ export const unapprovePhotoById = (imageId) => {
         .then(response => response.data)
 }
 
+export const highlightPhotoById =(imageId) => {
+    return axiosInstance.put(`highlightPhotoById/${imageId}`)
+        .then(response => response.data)
+}
+
+export const unhighlightPhotoById =(imageId) => {
+    return axiosInstance.put(`unhighlightPhotoById/${imageId}`)
+        .then(response => response.data)
+}
+
 //DELETE
 export const deletePhoto = (imageId) => {
     return axiosInstance.delete(`deletePhoto/${imageId}`)

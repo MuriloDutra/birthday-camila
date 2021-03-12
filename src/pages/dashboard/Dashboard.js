@@ -57,7 +57,7 @@ function Dashboard(props){
                             {   (selectedTab === 'waitingEvaluation') && (photos.length > 0) && photos.map(photo => {
                                     return (
                                         <ImageContainer
-                                            approvedPhotos
+                                            unapprovedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             callback={() => getUnapprovedPhotos().then(data => setPhotos(data))}
@@ -69,7 +69,7 @@ function Dashboard(props){
                             {   (selectedTab === 'approved') && (photos.length > 0) && photos.map(photo => {
                                     return (
                                         <ImageContainer
-                                            unapprovedPhotos
+                                            approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             callback={() => getApprovedPhotos().then(data => setPhotos(data))}
