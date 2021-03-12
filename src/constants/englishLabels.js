@@ -18,12 +18,24 @@ export const englishLabels = {
         emailPlaceholder: 'example@example.com',
         button: 'Sign in'
     },
+    dashBoardPage: {
+        approvedPhotos: 'Approved Photos',
+        unapprovedPhotos: 'Unapproved Photos',
+    },
     components:{
         sendPhotosContainer: {
             sendPhotosTitle: 'Did you take pictures of the party? Send them to us!',
             button: 'Send',
             selectedPhotosTitle: 'Selected photos',
             dashboardTitle: 'You can upload some photos here!'
+        },
+        imageContainer: {
+            englishDescription : "Image english description",
+            portugueseDescription : "Image portuguese description",
+            saveButton: 'Save',
+            approveButton: 'Approve image',
+            unapproveButton: 'Unapprove image',
+            imageName: "Image's name",
         }
     },
     errors:{

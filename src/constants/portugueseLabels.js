@@ -18,12 +18,24 @@ export const portugueseLabels = {
         emailPlaceholder: 'exemplo@exemplo.com',
         button: 'Entrar'
     },
+    dashBoardPage: {
+        approvedPhotos: 'Fotos aprovadas',
+        unapprovedPhotos: 'Fotos esperando avaliação',
+    },
     components:{
         sendPhotosContainer: {
             sendPhotosTitle: 'Tem fotos da festa? Mande pra gente!',
             button: 'Enviar',
             selectedPhotosTitle: 'Fotos selecionadas',
             dashboardTitle: 'Envie novas fotos por aqui!'
+        },
+        imageContainer: {
+            englishDescription : "Descrição da imagem em inglês",
+            portugueseDescription : "Descrição da imagem em português",
+            saveButton: 'Salvar',
+            approveButton: 'Aprovar imagem',
+            unapproveButton: 'Desaprovar imagem',
+            imageName: "Nome da imagem",
         }
     },
     errors:{
