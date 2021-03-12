@@ -16,21 +16,29 @@ axiosInstance.interceptors.response.use(
     error => {
         console.log('Error: ', error)
         console.log('Error response: ', error.response)
+        throw error
     }
 )
 
+//POST
 export const login = (body) => {
     return axiosInstance.post('login', body)
         .then(response => response.data)
 }
 
+export const sendPhotos = (body) => {
+    return axiosInstance.post('sendPhotos', body)
+        .then(response => response.data)
+}
+
+//GET
 export const getPhotos = () => {
     return axiosInstance.get('getPhotos')
         .then(response => response.data)
 }
 
-export const getPhotoById = (id) => {
-    return axiosInstance.get(`getPhotoById/${id}`)
+export const getPhotoById = (imageId) => {
+    return axiosInstance.get(`getPhotoById/${imageId}`)
         .then(response => response.data)
 }
 
@@ -49,17 +57,24 @@ export const getHighlightPhotos = () => {
         .then(response => response.data)
 }
 
-export const sendPhotos = (body) => {
-    return axiosInstance.post('sendPhotos', body)
+//PUT
+export const updatePhoto = (imageId, body) => {
+    return axiosInstance.put(`updatePhoto/${imageId}`, body)
         .then(response => response.data)
 }
 
-export const updatePhoto = (id) => {
-    return axiosInstance.put(`updatePhoto/${id}`)
+export const approvePhotoById = (imageId) => {
+    return axiosInstance.put(`approvePhotoById/${imageId}`)
         .then(response => response.data)
 }
 
-export const deletePhoto = (id) => {
-    return axiosInstance.delete(`deletePhoto/${id}`)
+export const unapprovePhotoById = (imageId) => {
+    return axiosInstance.put(`unapprovePhotoById/${imageId}`)
+        .then(response => response.data)
+}
+
+//DELETE
+export const deletePhoto = (imageId) => {
+    return axiosInstance.delete(`deletePhoto/${imageId}`)
         .then(response => response.data)
 }
