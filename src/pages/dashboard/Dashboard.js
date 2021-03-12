@@ -23,11 +23,24 @@ function Dashboard(props){
 
     useEffect(() => {
         if(selectedTab === 'waitingEvaluation'){
+            getUnapprovedPhotos()
+                .then(data => setPhotos(data))
+                .catch(error => setPhotos([]))
+        }else{
+            getApprovedPhotos()
+                .then(data => setPhotos(data))
+                .catch(error => setPhotos([]))
+        }
+    }, [selectedTab])
+
+
+    function callback(){
+        if(selectedTab === 'waitingEvaluation'){
             getUnapprovedPhotos().then(data => setPhotos(data))
         }else{
             getApprovedPhotos().then(data => setPhotos(data))
         }
-    }, [selectedTab])
+    }
 
 
     return (
@@ -37,7 +50,7 @@ function Dashboard(props){
 
                 return (
                     <div className="dashboard-body">
-                        <SendPhotosContainer dashboardVersion toggleFeedback={toggleFeedback} />
+                        <SendPhotosContainer dashboardVersion toggleFeedback={toggleFeedback} callback={callback} />
 
                         <div className="main-menu">
                             <p onClick={() => setSelectedTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
@@ -60,7 +73,7 @@ function Dashboard(props){
                                             unapprovedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => getUnapprovedPhotos().then(data => setPhotos(data))}
+                                            callback={callback}
                                         />
                                     )
                                 })
@@ -72,7 +85,7 @@ function Dashboard(props){
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => getApprovedPhotos().then(data => setPhotos(data))}
+                                            callback={callback}
                                         />
                                     )
                                 })
