@@ -35,6 +35,9 @@ export const portugueseLabels = {
             saveButton: 'Salvar',
             approveButton: 'Aprovar imagem',
             unapproveButton: 'Desaprovar imagem',
+            deleteButton: 'Excluir imagem',
+            highlightImageButton: 'Deixar em destaque',
+            unhighlightImageButton: 'Remover destaque',
             imageName: "Nome da imagem",
         }
     },

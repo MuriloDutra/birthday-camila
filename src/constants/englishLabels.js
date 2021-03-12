@@ -35,6 +35,9 @@ export const englishLabels = {
             saveButton: 'Save',
             approveButton: 'Approve image',
             unapproveButton: 'Unapprove image',
+            deleteButton: 'Delete image',
+            highlightImageButton: 'Highlight image',
+            unhighlightImageButton: 'Unhighlight image',
             imageName: "Image's name",
         }
     },
