@@ -8,6 +8,8 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(config => {
+    config.headers["authorization"] = sessionStorage.getItem('token')
+
     return config
 })
 
