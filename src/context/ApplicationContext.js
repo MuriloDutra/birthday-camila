@@ -15,6 +15,7 @@ class ApplicationContext extends Component{
     constructor(props){
         super(props)
         this.changeLanguage = this.changeLanguage.bind(this)
+        sessionStorage.setItem('language', this.state.currentLanguage)
     }
 
 
@@ -24,6 +25,8 @@ class ApplicationContext extends Component{
         }else{
             this.setState({language: englishLabels, currentLanguage: newLanguage})
         }
+
+        sessionStorage.setItem('language', newLanguage)
     }
 
 
