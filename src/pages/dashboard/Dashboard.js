@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getUnapprovedPhotos, approvePhotoById } from '../../services/request'
+import { getApprovedPhotos, getDisapprovedPhotos, approvePhotoById } from '../../services/request'
 import './Dashboard.scss'
 import Consumer from '../../context/ApplicationContext'
 import ImageContainer from '../../components/imageContainer/ImageContainer'
@@ -23,7 +23,7 @@ function Dashboard(props){
 
     useEffect(() => {
         if(selectedTab === 'waitingEvaluation'){
-            getUnapprovedPhotos()
+            getDisapprovedPhotos()
                 .then(data => setPhotos(data))
                 .catch(error => setPhotos([]))
         }else{
@@ -36,7 +36,7 @@ function Dashboard(props){
 
     function callback(){
         if(selectedTab === 'waitingEvaluation'){
-            getUnapprovedPhotos().then(data => setPhotos(data))
+            getDisapprovedPhotos().then(data => setPhotos(data))
         }else{
             getApprovedPhotos().then(data => setPhotos(data))
         }
@@ -58,7 +58,7 @@ function Dashboard(props){
                             </p>
                             
                             <p onClick={() => setSelectedTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
-                                {dashBoardPage.unapprovedPhotos}
+                                {dashBoardPage.disapprovedPhotos}
                             </p>
                         </div>
 
@@ -70,7 +70,7 @@ function Dashboard(props){
                             {   (selectedTab === 'waitingEvaluation') && (photos.length > 0) && photos.map(photo => {
                                     return (
                                         <ImageContainer
-                                            unapprovedPhotos
+                                            disapprovedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             callback={callback}

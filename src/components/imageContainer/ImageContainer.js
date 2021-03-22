@@ -3,7 +3,7 @@ import Consumer from '../../context/ApplicationContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faCheckCircle, faTimes, faTrash, faSave, faStar } from '@fortawesome/free-solid-svg-icons'
 import './ImageContainer.scss'
-import { approvePhotoById, unapprovePhotoById, deletePhoto, updatePhoto, highlightPhotoById, unhighlightPhotoById } from '../../services/request'
+import { approvePhotoById, disapprovePhotoById, deletePhoto, updatePhoto, highlightPhotoById, unhighlightPhotoById } from '../../services/request'
 
 
 function ImageContainer(props){
@@ -11,7 +11,7 @@ function ImageContainer(props){
     const [portugueseDescription, setPortugueseDescription] = useState('')
     const [imageName, setImageName] = useState('')
 
-    const { photo, toggleFeedback, callback, approvedPhotos, unapprovedPhotos } = props
+    const { photo, toggleFeedback, callback, approvedPhotos, disapprovedPhotos } = props
 
 
     function approveImage(imageId){
@@ -27,8 +27,8 @@ function ImageContainer(props){
     }
 
 
-    function unapproveImage(imageId){
-        unapprovePhotoById(imageId)
+    function disapproveImage(imageId){
+        disapprovePhotoById(imageId)
             .then(data => {
                 console.log('data: ', data)
                 toggleFeedback(false, 'Image success')
@@ -131,7 +131,7 @@ function ImageContainer(props){
                                     <FontAwesomeIcon icon={faSave} className="icon" />
                                 </button>
 
-                                {   unapprovedPhotos && 
+                                {   disapprovedPhotos && 
                                     <>
                                         <button className="check-button" onClick={() => approveImage(photo.id)}>
                                             {imageContainer.approveButton}
@@ -147,8 +147,8 @@ function ImageContainer(props){
 
                                 {   approvedPhotos &&
                                     <>
-                                        <button className="uncheck-button" onClick={() => unapproveImage(photo.id)}>
-                                            {imageContainer.unapproveButton}
+                                        <button className="uncheck-button" onClick={() => disapproveImage(photo.id)}>
+                                            {imageContainer.disapproveButton}
                                             <FontAwesomeIcon icon={faTimes} className="icon" />
                                         </button>
 

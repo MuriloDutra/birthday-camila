@@ -49,8 +49,8 @@ export const getApprovedPhotos = () => {
         .then(response => response.data)
 }
 
-export const getUnapprovedPhotos = () => {
-    return axiosInstance.get('getUnapprovedPhotos')
+export const getDisapprovedPhotos = () => {
+    return axiosInstance.get('getDisapprovedPhotos')
         .then(response => response.data)
 }
 
@@ -70,8 +70,8 @@ export const approvePhotoById = (imageId) => {
         .then(response => response.data)
 }
 
-export const unapprovePhotoById = (imageId) => {
-    return axiosInstance.put(`unapprovePhotoById/${imageId}`)
+export const disapprovePhotoById = (imageId) => {
+    return axiosInstance.put(`disapprovePhotoById/${imageId}`)
         .then(response => response.data)
 }
 
