@@ -1,6 +1,7 @@
 import React, { Component, createContext } from 'react'
 import { portugueseLabels } from '../constants/portugueseLabels'
 import { englishLabels } from '../constants/englishLabels'
+import { LANGUAGE } from '../constants/sessionStorageKeys'
 
 
 const { Provider, Consumer } = createContext()
@@ -15,7 +16,7 @@ class ApplicationContext extends Component{
     constructor(props){
         super(props)
         this.changeLanguage = this.changeLanguage.bind(this)
-        sessionStorage.setItem('language', this.state.currentLanguage)
+        sessionStorage.setItem(LANGUAGE, this.state.currentLanguage)
     }
 
 
@@ -26,7 +27,7 @@ class ApplicationContext extends Component{
             this.setState({language: englishLabels, currentLanguage: newLanguage})
         }
 
-        sessionStorage.setItem('language', newLanguage)
+        sessionStorage.setItem(LANGUAGE, newLanguage)
     }
 
 

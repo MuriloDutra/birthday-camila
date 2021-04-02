@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { TOKEN } from '../constants/sessionStorageKeys'
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:4000/',
@@ -8,8 +9,7 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(config => {
-    config.headers["authorization"] = sessionStorage.getItem('token')
-
+    config.headers["authorization"] = sessionStorage.getItem(TOKEN)
     return config
 })
 
