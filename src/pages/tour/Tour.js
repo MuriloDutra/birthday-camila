@@ -11,9 +11,7 @@ import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotos
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
     const [overlayImage, setOverlayImage] = useState('')
-    const [selectedPhotos, setSelectedPhotos] = useState([])
-    const [highlightPhotos, setHighlightPhotos] = useState([])
-    const [otherPhotos, setOtherPhotos] = useState([])
+    const { toggleFeedback } = props
 
 
     function handleSlide(type){
@@ -148,7 +146,7 @@ function Tour(props){
                                 <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
                             </div>
 
-                            <SendPhotosContainer />
+                            <SendPhotosContainer toggleFeedback={toggleFeedback} />
                             
                             <div className="images-catalog">
                                 <h1>{photosPage.photosTitle}</h1>
