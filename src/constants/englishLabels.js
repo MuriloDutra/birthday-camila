@@ -41,8 +41,12 @@ export const englishLabels = {
             imageName: "Image's name",
         }
     },
-    errors:{
+    messages:{
         //error messages
+        photo_not_found: {
+            value: "photo_not_found",
+            display: "Photo not found."
+        },
         error_to_get_user: {
             value: "error_to_get_user",
             display: "Error to get user.",

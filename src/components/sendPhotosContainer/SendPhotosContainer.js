@@ -4,6 +4,7 @@ import './SendPhotosContainer.scss'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sendPhotos } from '../../services/request'
+import { findMessage, showRegularMessage } from '../../helpers'
 
 
 function SendPhotosContainer(props){
@@ -40,14 +41,20 @@ function SendPhotosContainer(props){
                 
                 sendPhotos(body)
                     .then(data => {
-                        toggleFeedback(false, 'Send success.')
+                        toggleFeedback(false, findMessage(data.message))
+
                         if(callback){
                             callback()
                         }
-                        
                         setSelectedPhotos([])
                     })
-                    .catch(error => toggleFeedback(true, 'Send error.'))
+                    .catch(error => {
+                        if(error.response.data.error){
+                            toggleFeedback(true, findMessage(error.response.data.error))
+                        }else{
+                            toggleFeedback(true, showRegularMessage(false))
+                        }
+                    })
             })
     }
 

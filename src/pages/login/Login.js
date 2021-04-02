@@ -5,6 +5,8 @@ import './Login.scss'
 import { login } from '../../services/request'
 import { withRouter } from 'react-router-dom'
 import Lottie from 'lottie-react-web'
+import { TOKEN } from '../../constants/sessionStorageKeys'
+import { findMessage, showRegularMessage } from '../../helpers'
 
 
 function Login(props){
@@ -32,11 +34,15 @@ function Login(props){
 
         login(body)
             .then(data => {        
-                sessionStorage.setItem('token', data.token)
+                sessionStorage.setItem(TOKEN, data.token)
                 history.push('/dashboard')
             })
             .catch(error => {
-                toggleFeedback(true, 'Erro ao fazer login.')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
             .finally(() => setLoading(false))
     }

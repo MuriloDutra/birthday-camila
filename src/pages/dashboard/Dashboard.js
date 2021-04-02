@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getDisapprovedPhotos, approvePhotoById } from '../../services/request'
+import { getApprovedPhotos, getDisapprovedPhotos } from '../../services/request'
 import './Dashboard.scss'
 import Consumer from '../../context/ApplicationContext'
 import ImageContainer from '../../components/imageContainer/ImageContainer'
+import { TOKEN } from '../../constants/sessionStorageKeys'
+import { findMessage, showRegularMessage } from '../../helpers'
 
 
 function Dashboard(props){
@@ -14,7 +16,7 @@ function Dashboard(props){
     const { toggleFeedback } = props
 
     useEffect(() => {
-        if(!sessionStorage.getItem('token')){
+        if(!sessionStorage.getItem(TOKEN)){
             props.history.replace('/login')
             props.toggleFeedback(true, 'Permissão negada.')
         }
@@ -25,11 +27,22 @@ function Dashboard(props){
         if(selectedTab === 'waitingEvaluation'){
             getDisapprovedPhotos()
                 .then(data => setPhotos(data))
-                .catch(error => setPhotos([]))
+                .catch(error => {
+                    if(error.response.data.error){
+                        toggleFeedback(true, findMessage(error.response.data.error))
+                    }else{
+                        showRegularMessage(false)
+                    }
+
+                    setPhotos([])
+                })
         }else{
             getApprovedPhotos()
                 .then(data => setPhotos(data))
-                .catch(error => setPhotos([]))
+                .catch(error => {
+                    setPhotos([])
+                    showRegularMessage(false)
+                })
         }
     }, [selectedTab])
 

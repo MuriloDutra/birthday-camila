@@ -4,25 +4,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faCheckCircle, faTimes, faTrash, faSave, faStar } from '@fortawesome/free-solid-svg-icons'
 import './ImageContainer.scss'
 import { approvePhotoById, disapprovePhotoById, deletePhoto, updatePhoto, highlightPhotoById, unhighlightPhotoById } from '../../services/request'
+import { findMessage, showRegularMessage } from '../../helpers'
 
 
 function ImageContainer(props){
     const [englishDescription, setEnglishDescription] = useState('')
     const [portugueseDescription, setPortugueseDescription] = useState('')
     const [imageName, setImageName] = useState('')
-
     const { photo, toggleFeedback, callback, approvedPhotos, disapprovedPhotos } = props
 
 
     function approveImage(imageId){
         approvePhotoById(imageId)
             .then(data => {
-                console.log('data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
@@ -30,12 +33,15 @@ function ImageContainer(props){
     function disapproveImage(imageId){
         disapprovePhotoById(imageId)
             .then(data => {
-                console.log('data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
@@ -43,12 +49,15 @@ function ImageContainer(props){
     function deleteImage(imageId){
         deletePhoto(imageId)
             .then(data => {
-                console.log('Data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
@@ -67,8 +76,7 @@ function ImageContainer(props){
 
         updatePhoto(imageId, body)
             .then(data => {
-                console.log('Data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
 
                 setEnglishDescription('')
@@ -76,7 +84,11 @@ function ImageContainer(props){
                 setImageName('')
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
@@ -84,12 +96,15 @@ function ImageContainer(props){
     function highlightImage(imageId){
         highlightPhotoById(imageId)
             .then(data => {
-                console.log('Data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
@@ -97,12 +112,15 @@ function ImageContainer(props){
     function unhighlightImage(imageId){
         unhighlightPhotoById(imageId)
             .then(data => {
-                console.log('Data: ', data)
-                toggleFeedback(false, 'Image success')
+                toggleFeedback(false, findMessage(data.message))
                 callback()
             })
             .catch(error => {
-                toggleFeedback(true, 'Image error')
+                if(error.response.data.error){
+                    toggleFeedback(true, findMessage(error.response.data.error))
+                }else{
+                    toggleFeedback(true, showRegularMessage(false))
+                }
             })
     }
 
