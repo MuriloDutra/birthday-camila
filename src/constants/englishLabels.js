@@ -43,29 +43,98 @@ export const englishLabels = {
     },
     errors:{
         //error messages
-        error_to_get_user: "Error to get user.",
-        error_to_load_disapproved_photos: 'It was not possible to recover disapproved photos.',
-        error_to_approve_photo: "It was not possible to approve the photo.",
-        error_to_disapprove_photo: "It was not possible to disapprove the photo.",
-        error_to_higilight_photo: "It was not possible to higilight the photo.",
-        error_to_unhigilight_photo: "It was not possible to unhigilight the photo.",
-        error_to_load_photos: 'It was not possible to recover the photos.',
-        error_to_load_approved_photos: 'It was not possible to recover the APPROVED photos.',
-        error_to_load_unapproved_photos: 'It was not possible to recover the UNAPPROVED photos.',
-        error_to_get_photo_by_id: 'It was not possible to recover the photo by ID.',
-        error_to_load_highlight_photos: 'It was not possible to recover the HIGHLIGHT photos.',
-        error_to_post_new_photos: 'It was not possible to save new photos.',
-        error_to_update_photo: 'It was not possible to update the photo.',
-        error_to_delete_photo: 'It was not possible to delete the photo.',
-        user_not_found: 'User not found.',
+        error_to_get_user: {
+            value: "error_to_get_user",
+            display: "Error to get user.",
+        },
+        error_to_load_disapproved_photos: {
+            value: 'error_to_load_disapproved_photos',
+            display: 'It was not possible to recover disapproved photos.',
+        },
+        error_to_approve_photo: {
+            value: 'error_to_approve_photo',
+            display: "It was not possible to approve the photo.",
+        },
+        error_to_disapprove_photo: {
+            value: 'error_to_disapprove_photo',
+            display: "It was not possible to disapprove the photo.",
+        },
+        error_to_higilight_photo: {
+            value: 'error_to_higilight_photo',
+            display: "It was not possible to higilight the photo.",
+        },
+        error_to_unhigilight_photo: {
+            value: 'error_to_unhigilight_photo',
+            display: "It was not possible to unhigilight the photo.",
+        },
+        error_to_load_photos: {
+            value: 'error_to_load_photos',
+            display: 'It was not possible to recover the photos.',
+        },
+        error_to_load_approved_photos: {
+            value: 'error_to_load_approved_photos',
+            display: 'It was not possible to recover the APPROVED photos.',
+        },
+        error_to_load_unapproved_photos: {
+            value: 'error_to_load_unapproved_photos',
+            display: 'It was not possible to recover the UNAPPROVED photos.',
+        },
+        error_to_get_photo_by_id: {
+            value: 'error_to_get_photo_by_id',
+            display: 'It was not possible to recover the photo by ID.',
+        },
+        error_to_load_highlight_photos: {
+            value: 'error_to_load_highlight_photos',
+            display: 'It was not possible to recover the HIGHLIGHT photos.',
+        },
+        error_to_post_new_photos: {
+            value: 'error_to_post_new_photos',
+            display: 'It was not possible to save new photos.',
+        },
+        error_to_update_photo: {
+            value: 'error_to_update_photo',
+            display: 'It was not possible to update the photo.',
+        },
+        error_to_delete_photo: {
+            value: 'error_to_delete_photo',
+            display: 'It was not possible to delete the photo.',
+        },
+        user_not_found: {
+            value: 'user_not_found',
+            display: 'User not found.',
+        },
         //success messages
-        photos_received: "Photos sent.",
-        photo_received: "Photo sent.",
-        photo_was_updated: "Photo updated.",
-        photo_was_approved: "Photo approved.",
-        photo_was_disapproved: "Photo disapproved",
-        photo_was_highlighted: "Photo highlighted",
-        photo_was_unhighlighted: "Photo unhighlighted",
-        photo_deleted: "Photo deleted",
+        photos_received: {
+            value: 'photos_received',
+            display: "Photos sent.",
+        },
+        photo_received: {
+            value: 'photo_received',
+            display: "Photo sent.",
+        },
+        photo_was_updated: {
+            value: 'photo_was_updated',
+            display: "Photo updated.",
+        },
+        photo_was_approved: {
+            value: 'photo_was_approved',
+            display: "Photo approved.",
+        },
+        photo_was_disapproved: {
+            value: 'photo_was_disapproved',
+            display: "Photo disapproved",
+        },
+        photo_was_highlighted: {
+            value: 'photo_was_highlighted',
+            display: "Photo highlighted",
+        },
+        photo_was_unhighlighted: {
+            value: 'photo_was_unhighlighted',
+            display: "Photo unhighlighted",
+        },
+        photo_deleted: {
+            value: 'photo_deleted',
+            display: "Photo deleted",
+        },
     }
 }
