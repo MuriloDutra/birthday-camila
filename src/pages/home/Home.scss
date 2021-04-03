@@ -1,12 +1,38 @@
+@import '../../assets/colors.scss';
 .App{
-    background-color: black;
+    background-color: $black;
+}
+
+.player-container{
+    margin: 20px 0px 20px 0px;
+    padding: 10px;
+    display: flex;
+    width: 100%;
+
+    .player{
+        color: $white;
+        font-size: 25px;
+        cursor: pointer;
+        padding: 5px 0px 0px 0px;
+    }
+
+    h1{
+        color: $white;
+        margin: 0px 10px 0px 0px;
+    }
+
+    p{
+        font-size: 30px;
+        margin: 0px 10px 0px 5px;
+        color: $pink;
+    }
 }
 
 .main-content{
     width: 100%;
     position: relative;
-    height: 800px;
-    background-color: black;
+    height: 600px;
+    background-color: $black;
     padding-top: 10%;
 
     .main-photo-container{
@@ -27,7 +53,7 @@
         padding-top: 10%;
 
         h1, h3{
-            color: white;
+            color: $white;
             text-align: center;
             margin: 0px;
         }
