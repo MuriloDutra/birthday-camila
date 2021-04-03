@@ -1,7 +1,9 @@
+@import './assets/colors.scss';
+
 h1, h2, h3, p, span, li, label, button {
     font-family: 'Bebas Neue', cursive; 
 }
 
 p{
-    color: white;
+    color: $white;
 }

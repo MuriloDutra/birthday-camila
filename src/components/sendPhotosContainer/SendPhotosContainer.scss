@@ -1,9 +1,10 @@
+@import '../../assets/colors.scss';
 .send-photos-container{
     padding: 1% 0% 0% 5%;
     display: block;
 
     h1{
-        color: white;
+        color: $white;
         font-size: 40px;
         margin: 0px;
     }
@@ -13,7 +14,7 @@
 
         .selected-photos-title{
             margin: 20px 0px 0px 0px;
-            color: #e87f8d;
+            color: $pink;
             font-size: 22px;
         }
 
@@ -24,10 +25,10 @@
             overflow: auto;
 
             .selected-photo{
-                color: white;
+                color: $white;
 
                 .check-circle{
-                    color: green;
+                    color: $green;
                     margin: 0px 5px 0px 5px;
                 }
             }
@@ -35,7 +36,7 @@
 
         input{
             margin: 10px 0px 0px 0px;
-            color: white;
+            color: $white;
             font-family: 'Bebas Neue', cursive;
             font-size: 15px;
             width: 22%;

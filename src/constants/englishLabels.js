@@ -8,7 +8,8 @@ export const englishLabels = {
             secondLink: 'Man band',
             thridLink: 'Boy band',
             fourthLink: 'Tour'
-        }
+        },
+        themeSong: "Listen the site's theme song!",
     },
     photosPage: {
         photosTitle: 'See more photos of the party',

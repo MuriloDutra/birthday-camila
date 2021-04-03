@@ -1,6 +1,8 @@
+@import '../../assets/colors.scss';
+
 .image-container{
     display: flex;
-    border-bottom: solid white 1px;
+    border-bottom: solid $white 1px;
 
     img {
         width: 50%;
@@ -15,17 +17,17 @@
         padding-top: 1%;
 
         .icon-name{
-            color: white;
+            color: $white;
             font-size: 25px;
         }
 
         .icon{
-            color: white;
+            color: $white;
             margin-left: 5px;
         }
 
         label{
-            color: white;
+            color: $white;
             font-size: 20px;
         }
 
@@ -43,46 +45,46 @@
         }
 
         .check-button{
-            background-color: green;
-            color: white;
+            background-color: $green;
+            color: $white;
         }
 
         .uncheck-button, .trash-button{
-            background-color: red;
-            color: white;
+            background-color: $red;
+            color: $white;
         }
 
         .star-button{
-            background-color: yellow;
+            background-color: $yellow;
 
             .icon{
-                color: black;
+                color: $black;
             }
         }
 
         .unstar-button{
-            background-color: gray;
+            background-color: $gray;
 
             .icon{
-                color: black;
+                color: $black;
             }
         }
 
         .save-button{
-            color: black;
+            color: $black;
 
             .icon{
-                color: black;
+                color: $black;
             }
         }
 
         p{
             margin: 10px 0px 5px 0px;
-            color: #e87f8d;
+            color: $pink;
             font-size: 18px;
 
             span{
-                color: white;
+                color: $white;
             }
         }
     }

@@ -1,3 +1,5 @@
+@import '../../assets/colors.scss';
+
 .links-container{
     padding: 2% 0% 2% 33%;
 
@@ -6,13 +8,13 @@
         display: flex;
 
         li{
-            color: white;
+            color: $white;
             margin-right: 20px;
             font-size: 25px;
         }
 
         li:hover{
-            color: #e87f8d;
+            color: $pink;
             cursor: pointer;
         }
     }

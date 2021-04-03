@@ -1,3 +1,4 @@
+@import '../../assets/colors.scss';
 .dashboard-body{
     width: 100%;
     padding-top: 8%;
@@ -8,7 +9,7 @@
 
         p{
             width: 50%;
-            color: white;
+            color: $white;
             text-align: center;
             font-size: 20px;
             cursor: pointer;
@@ -18,7 +19,7 @@
 
         .selected-tab{
             width: 50%;
-            color: #e87f8d;
+            color: $pink;
             text-align: center;
             font-size: 20px;
             cursor: pointer;
