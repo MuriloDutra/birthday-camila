@@ -1,17 +1,38 @@
-import React, { useState } from 'react'
-import partyImages from '../../constants/slideImages'
+import React, { useEffect, useState } from 'react'
 import { faChevronLeft, faChevronRight, faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
-import catalogImages from '../../constants/catalogImages'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
+import { getApprovedPhotos } from '../../services/request'
 
 
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
     const [overlayImage, setOverlayImage] = useState('')
+    const [highlightedImages, setHighlightedImages] = useState([])
+    const [commonPhotos, setCommonPhotos] = useState([])
     const { toggleFeedback } = props
+
+
+    useEffect(() => {
+        getApprovedPhotos()
+            .then((data) => {
+                let highlightedItems = []
+                let otherItems = []
+
+                data.forEach((image) => {
+                    if(image.highlightImage == 1){
+                        highlightedItems.push(image)
+                    }else{
+                        otherItems.push(image)
+                    }
+                })
+
+                setHighlightedImages(highlightedItems)
+                setCommonPhotos(otherItems)
+            })
+    }, [])
 
 
     function handleSlide(type){
@@ -32,12 +53,12 @@ function Tour(props){
     function renderCatalogImages(currentLanguage){
         let secondPictureOfColumn = 1
 
-        return catalogImages.map((image, index) => {
-            if((index + 1) !== catalogImages.length && secondPictureOfColumn !== index){
+        return commonPhotos.map((image, index) => {
+            if((index + 1) !== commonPhotos.length && secondPictureOfColumn !== index){
                 secondPictureOfColumn = index + 1
 
                 const firstImage = image
-                const secondImage = catalogImages[index + 1]
+                const secondImage = commonPhotos[index + 1]
                 const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
                 const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
 
@@ -99,18 +120,23 @@ function Tour(props){
             {   context => {
                 const { currentLanguage } = context
                 const { photosPage } = context.language
+    
+                if(highlightedImages.length > 0){
+                    var firstImage = highlightedImages[currentImage]
+                    var firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
 
-                const firstImage = partyImages[currentImage]
-                const secondImage = partyImages[currentImage + 1]
-                const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
-                const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+                    var secondImage = highlightedImages[currentImage + 1]
+
+                    if(secondImage){
+                        var secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+                    }
+                }
 
                 return (
-                    <>
-                        <div className="tour-body">
+                <>
+                    <div className="tour-body">
+                        {   highlightedImages.length > 0 &&
                             <div className="slide-container">
-                                <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
-
                                 <div className="slide">
                                     <div className="container-first-image">
                                         <img
@@ -126,45 +152,54 @@ function Tour(props){
                                             }
                                         </p>
                                     </div>
-
-                                    <div className="container-second-image">
-                                        <img
-                                            className="main-image"
-                                            alt={secondImageAlt}
-                                            src={secondImage.imageUrl}
-                                            onClick={() => handleImageClick(secondImage)}
-                                        />
-                                        <p className="photo-description">
-                                            {   currentLanguage === 'EN-US'
-                                                ? secondImage.englishDescription
-                                                : secondImage.portugueseDescription
-                                            }
-                                        </p>
-                                    </div>
+                                    {   secondImage && 
+                                        <div className="container-second-image">
+                                            <img
+                                                className="main-image"
+                                                alt={secondImageAlt}
+                                                src={secondImage.imageUrl}
+                                                onClick={() => handleImageClick(secondImage)}
+                                            />
+                                            <p className="photo-description">
+                                                {   currentLanguage === 'EN-US'
+                                                    ? secondImage.englishDescription
+                                                    : secondImage.portugueseDescription
+                                                }
+                                            </p>
+                                        </div>
+                                    }
+                                    
                                 </div>
-
-                                <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />
+                                {   highlightedImages.length > 2 &&
+                                    <div className="arrows-container">
+                                        <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
+                                        <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />  
+                                    </div>
+                                }
                             </div>
+                        }
 
-                            <SendPhotosContainer toggleFeedback={toggleFeedback} />
-                            
+                        <SendPhotosContainer toggleFeedback={toggleFeedback} />
+                        
+                        {   commonPhotos.length > 0 &&
                             <div className="images-catalog">
                                 <h1>{photosPage.photosTitle}</h1>
                                 {renderCatalogImages(currentLanguage)}
                             </div>
-                        </div>
-                    
-                        {   overlayImage !== '' &&
-                            <div className="image-overlay">
-                                <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
-                                <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
-                                <img
-                                    alt={currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription}
-                                    src={overlayImage.imageUrl}
-                                />
-                            </div>
                         }
-                    </>
+                    </div>
+                
+                    {   overlayImage !== '' &&
+                        <div className="image-overlay">
+                            <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
+                            <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                            <img
+                                alt={currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription}
+                                src={overlayImage.imageUrl}
+                            />
+                        </div>
+                    }
+                </>
                 )
             }}
         </Consumer>

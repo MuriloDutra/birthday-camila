@@ -36,28 +36,33 @@
             }
         
             .main-image{
-                width: 60%;
+                width: 80%;
                 margin: 10px;
             }
         }
 
-        .arrow{
-            font-size: 80px;
-            cursor: pointer;
-            color: $white;
-            margin: 10px;
-            position: absolute;
-            top: 50%;
-        }
+        .arrows-container{
+            text-align: left;
+            padding: 2% 5% 0% 5%;
 
-        .right-arrow{
-            margin: 10px;
-            right: 0px;
-        }
+            .arrow{
+                font-size: 50px;
+                cursor: pointer;
+                color: $white;
+                margin: 10px;
+                top: 50%;
+            }
 
-        .left-arrow{
-            margin: 10px;
-            left: 0px;
+            .right-arrow{
+                margin: 10px;
+                right: 0px;
+            }
+
+            .left-arrow{
+                margin: 10px;
+                margin-right: 90%;
+                left: 0px;
+            }
         }
     }
 
