@@ -22,6 +22,7 @@ export const englishLabels = {
     dashBoardPage: {
         approvedPhotos: 'Approved Photos',
         disapprovedPhotos: 'Disapproved Photos',
+        filterTitle: 'Filter images by name',
     },
     components:{
         sendPhotosContainer: {

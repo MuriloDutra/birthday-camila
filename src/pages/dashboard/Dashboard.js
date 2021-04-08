@@ -10,10 +10,12 @@ import { findMessage, showRegularMessage } from '../../helpers'
 
 
 function Dashboard(props){
+    const [filteredPhotos, setFilteredPhotos] = useState([])
     const [photos, setPhotos] = useState([])
     const [selectedTab, setSelectedTab] = useState('approved')//approved, waitingEvaluation
-    
+    const [searchText, setSearchText] = useState('')
     const { toggleFeedback } = props
+
 
     useEffect(() => {
         if(!sessionStorage.getItem(TOKEN)){
@@ -26,9 +28,11 @@ function Dashboard(props){
     useEffect(() => {
         if(selectedTab === 'waitingEvaluation'){
             getDisapprovedPhotos()
-                .then(data => setPhotos(data))
+                .then(data => {
+                    setPhotos(data)
+                })
                 .catch(error => {
-                    if(error.response.data.error){
+                    if(error.response && error.response.data.error){
                         toggleFeedback(true, findMessage(error.response.data.error))
                     }else{
                         showRegularMessage(false)
@@ -38,7 +42,9 @@ function Dashboard(props){
                 })
         }else{
             getApprovedPhotos()
-                .then(data => setPhotos(data))
+                .then(data => {
+                    setPhotos(data)
+                })
                 .catch(error => {
                     setPhotos([])
                     showRegularMessage(false)
@@ -53,6 +59,31 @@ function Dashboard(props){
         }else{
             getApprovedPhotos().then(data => setPhotos(data))
         }
+    }
+
+
+    function handleOnChangeText(text){
+        const { value } = text.target
+        setSearchText(value)
+
+        if(value.length === 0){
+            setPhotos(photos)
+            setFilteredPhotos([])
+            return
+        }
+
+        var results = photos.filter((item) => {
+            if(item.imageName && text){
+                let match = item.imageName.toLowerCase().indexOf(value.toLowerCase()) >= 0
+                return match
+            }
+        });
+
+        if(results.length === 0 && searchText.length > 0){
+            toggleFeedback(true, findMessage('photo_not_found'))
+        }
+
+        setFilteredPhotos(results)
     }
 
 
@@ -75,12 +106,15 @@ function Dashboard(props){
                             </p>
                         </div>
 
-                        {   photos.length === 0 &&
-                            <p className="warning">Nenhuma foto foi encontrada.</p>
-                        }
-
                         <div className="images">
-                            {   (selectedTab === 'waitingEvaluation') && (photos.length > 0) && photos.map(photo => {
+                            <p className="filter-title">{dashBoardPage.filterTitle}</p>
+
+                            <input  type="search" className="filter-input" value={searchText} onChange={handleOnChangeText} />
+
+                            { photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p> }
+
+                            {/*REGULAR PHOTOS*/}
+                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length === 0) && (photos.length > 0) && photos.map(photo => {
                                     return (
                                         <ImageContainer
                                             disapprovedPhotos
@@ -92,7 +126,33 @@ function Dashboard(props){
                                 })
                             }
 
-                            {   (selectedTab === 'approved') && (photos.length > 0) && photos.map(photo => {
+                            {   (selectedTab === 'approved') && (filteredPhotos.length === 0) && (photos.length > 0) && photos.map(photo => {
+                                    return (
+                                        <ImageContainer
+                                            approvedPhotos
+                                            toggleFeedback={toggleFeedback}
+                                            photo={photo}
+                                            callback={callback}
+                                        />
+                                    )
+                                })
+                            }
+
+                            {/*FILTERED PHOTOS*/}
+                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length > 0) && filteredPhotos.map(photo => {
+                                    return (
+                                        <ImageContainer
+                                            approvedPhotos
+                                            toggleFeedback={toggleFeedback}
+                                            photo={photo}
+                                            callback={callback}
+                                        />
+                                    )
+                                })
+                            }
+
+                            {/*FILTERED PHOTOS*/}
+                            {   (selectedTab === 'approved') && (filteredPhotos.length > 0) && filteredPhotos.map(photo => {
                                     return (
                                         <ImageContainer
                                             approvedPhotos

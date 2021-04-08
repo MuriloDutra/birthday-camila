@@ -33,5 +33,20 @@
 
     .images{
         padding: 2%;
+
+        .filter-title{
+            font-size: 20px;
+            margin: 10px 20px 0% 20px
+        }
+
+        .filter-input{
+            width: 100%;
+            margin: 10px 20px 2% 20px;
+            height: 30px;
+            border: solid $pink 3px;
+            background-color: $black;
+            color: $white;
+            font-weight: 900;
+        }
     }
 }
