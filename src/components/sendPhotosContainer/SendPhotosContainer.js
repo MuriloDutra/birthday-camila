@@ -89,7 +89,6 @@ function SendPhotosContainer(props){
                             <input
                                 type="file"
                                 onChange={value => {
-                                    console.log('value.target.files[0]: ', value.target.files[0])
                                     if(selectedPhotos.length < 10 && (value.target.files[0] && value.target.files[0].name)){
                                         setSelectedPhotos([...selectedPhotos, value.target.files[0]])
                                     }

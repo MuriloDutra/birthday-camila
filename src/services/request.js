@@ -34,15 +34,17 @@ export const sendPhotos = (body) => {
 }
 
 //GET
+export const getPhotoById = (imageId) => {
+    return axiosInstance.get(`getPhotoById/${imageId}`)
+        .then(response => response.data)
+}
+
+
 export const getPhotos = (page) => {
     return axiosInstance.get(`getPhotos?pageNumber=${page}&pageSize=15`)
         .then(response => response.data)
 }
 
-export const getPhotoById = (imageId) => {
-    return axiosInstance.get(`getPhotoById/${imageId}`)
-        .then(response => response.data)
-}
 
 export const getApprovedPhotos = (page) => {
     return axiosInstance.get(`getApprovedPhotos?pageNumber=${page}&pageSize=15`)

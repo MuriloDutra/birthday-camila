@@ -13,7 +13,7 @@ import Lottie from 'lottie-react-web'
 function Dashboard(props){
     const [filteredPhotos, setFilteredPhotos] = useState([])
     const [photos, setPhotos] = useState([])
-    const [selectedTab, setSelectedTab] = useState('approved')//approved, waitingEvaluation
+    const [selectedTab, setSelectedTab] = useState('approved')//Possible values: approved, waitingEvaluation
     const [searchText, setSearchText] = useState('')
     const [page, setPage] = useState(0)
     const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
@@ -86,7 +86,13 @@ function Dashboard(props){
         setPhotos([])
         setPage(0)
         setLoadedAllPhotos(false)
-        loadPhotosData()
+    }
+
+
+    function handlePhotoUpdate(indexPhoto){
+        let newPhotosArray = [...photos]
+        newPhotosArray.splice(indexPhoto, 1)
+        setPhotos(newPhotosArray)
     }
 
 
@@ -130,7 +136,11 @@ function Dashboard(props){
 
                 return (
                     <div className="dashboard-body">
-                        <SendPhotosContainer dashboardVersion toggleFeedback={toggleFeedback} callback={callback} />
+                        <SendPhotosContainer
+                            dashboardVersion
+                            toggleFeedback={toggleFeedback}
+                            callback={() => { callback(); }}
+                        />
 
                         <div className="main-menu">
                             <p onClick={() => handleOnClickTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
@@ -150,51 +160,55 @@ function Dashboard(props){
                             { photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p> }
 
                             {/*REGULAR PHOTOS*/}
-                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length === 0) && (photos.length > 0) && photos.map(photo => {
+                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length === 0) && (photos.length > 0) &&
+                                photos.map((photo, index) => {
                                     return (
                                         <ImageContainer
                                             disapprovedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={callback}
+                                            callback={() => handlePhotoUpdate(index)}
                                         />
                                     )
                                 })
                             }
 
-                            {   (selectedTab === 'approved') && (filteredPhotos.length === 0) && (photos.length > 0) && photos.map(photo => {
+                            {   (selectedTab === 'approved') && (filteredPhotos.length === 0) && (photos.length > 0) &&
+                                photos.map((photo, index) => {
                                     return (
                                         <ImageContainer
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={callback}
-                                        />
-                                    )
-                                })
-                            }
-
-                            {/*FILTERED PHOTOS*/}
-                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length > 0) && filteredPhotos.map(photo => {
-                                    return (
-                                        <ImageContainer
-                                            approvedPhotos
-                                            toggleFeedback={toggleFeedback}
-                                            photo={photo}
-                                            callback={callback}
+                                            callback={() => handlePhotoUpdate(index)}
                                         />
                                     )
                                 })
                             }
 
                             {/*FILTERED PHOTOS*/}
-                            {   (selectedTab === 'approved') && (filteredPhotos.length > 0) && filteredPhotos.map(photo => {
+                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length > 0) &&
+                                filteredPhotos.map((photo, index) => {
                                     return (
                                         <ImageContainer
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={callback}
+                                            callback={() => handlePhotoUpdate(index)}
+                                        />
+                                    )
+                                })
+                            }
+
+                            {/*FILTERED PHOTOS*/}
+                            {   (selectedTab === 'approved') && (filteredPhotos.length > 0) &&
+                                filteredPhotos.map((photo, index) => {
+                                    return (
+                                        <ImageContainer
+                                            approvedPhotos
+                                            toggleFeedback={toggleFeedback}
+                                            photo={photo}
+                                            callback={() => handlePhotoUpdate(index)}
                                         />
                                     )
                                 })
