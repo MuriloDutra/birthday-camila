@@ -12,11 +12,19 @@ function Tour(props){
     const [overlayImage, setOverlayImage] = useState('')
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
+    const [page, setPage] = useState(0)
     const { toggleFeedback } = props
 
 
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            console.log("you're at the bottom of the page")
+        }
+    };
+
+    
     useEffect(() => {
-        getApprovedPhotos()
+        getApprovedPhotos(page)
             .then((data) => {
                 let highlightedItems = []
                 let otherItems = []
@@ -51,50 +59,51 @@ function Tour(props){
 
 
     function renderCatalogImages(currentLanguage){
-        let secondPictureOfColumn = 1
+        let arrayOfContainer = []
+        let imageContainer = {}
 
-        return commonPhotos.map((image, index) => {
-            if((index + 1) !== commonPhotos.length && secondPictureOfColumn !== index){
-                secondPictureOfColumn = index + 1
+        commonPhotos.forEach((image, index) => {
+            if(index % 2 == 0){
+                imageContainer.firstImage = image
+                
+                if(!commonPhotos[index +  1]){
+                    arrayOfContainer.push(imageContainer)
+                }
+            }else{
+                imageContainer.secondImage = image
+                arrayOfContainer.push(imageContainer)
 
-                const firstImage = image
-                const secondImage = commonPhotos[index + 1]
-                const firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
-                const secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
-
-                return (
-                    <div className="image-row" key={image.id}>
-                        <div className="container-first-image">
-                            <img
-                                className="normal-image"
-                                src={firstImage.imageUrl}
-                                alt={firstImageAlt}
-                                onClick={() => handleImageClick(firstImage)}
-                            />
-                            <p className="photo-description">
-                                {   currentLanguage === 'EN-US'
-                                    ? firstImage.englishDescription
-                                    : firstImage.portugueseDescription
-                                }
-                            </p>
-                        </div>
-                        <div className="container-second-image">
-                            <img
-                                className="normal-image"
-                                src={secondImage.imageUrl}
-                                alt={secondImageAlt}
-                                onClick={() => handleImageClick(secondImage)}
-                            />
-                            <p className="photo-description">
-                                {   currentLanguage === 'EN-US'
-                                    ? secondImage.englishDescription
-                                    : secondImage.portugueseDescription
-                                }
-                            </p>
-                        </div>
-                    </div>
-                )
+                imageContainer = {}
             }
+        })
+
+        return arrayOfContainer.map((obj, index) => {
+            const { firstImage, secondImage } = obj
+            const firstImageDescription = firstImage
+                ? currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
+                : ''
+
+            const secondImageDescription = secondImage
+                ? currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+                : ''
+
+            return (
+                <div className="image-row" key={firstImage ? firstImage.id : index}>
+                    {   firstImage &&
+                        <div className="container-first-image">
+                            <img src={firstImage.imageUrl} onClick={() => handleImageClick(firstImage)} className="normal-image" alt={firstImageDescription} />
+                            <p className="photo-description">{firstImageDescription}</p>
+                        </div>
+                    }
+
+                    {   secondImage &&
+                        <div className="container-second-image">
+                            <img src={secondImage.imageUrl} onClick={() => handleImageClick(secondImage)} className="normal-image" alt={secondImageDescription} />
+                            <p className="photo-description">{secondImageDescription}</p>
+                        </div>
+                    }
+                </div>
+            )
         })
     }
 
