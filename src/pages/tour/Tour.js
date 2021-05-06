@@ -5,6 +5,7 @@ import './Tour.scss'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
 import { getApprovedPhotos } from '../../services/request'
+import Lottie from 'lottie-react-web'
 
 
 function Tour(props){
@@ -13,18 +14,31 @@ function Tour(props){
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
     const [page, setPage] = useState(0)
+    const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { toggleFeedback } = props
 
 
     window.onscroll = function(ev) {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            console.log("you're at the bottom of the page")
+            if(loadedAllPhotos){
+                return
+            }
+
+            loadPhotosData()
         }
     };
 
     
     useEffect(() => {
-        getApprovedPhotos(page)
+        loadPhotosData()
+    }, [])
+
+
+    function loadPhotosData(){
+        setLoading(true)
+
+        getApprovedPhotos(page + 1)
             .then((data) => {
                 let highlightedItems = []
                 let otherItems = []
@@ -37,10 +51,16 @@ function Tour(props){
                     }
                 })
 
-                setHighlightedImages(highlightedItems)
-                setCommonPhotos(otherItems)
+                setHighlightedImages([...highlightedImages, ...highlightedItems])
+                setCommonPhotos([...commonPhotos,...otherItems])
+                setPage(page + 1)
+
+                if(data.length < 15){
+                    setLoadedAllPhotos(true)
+                }
             })
-    }, [])
+            .finally(() => setLoading(false))
+    }
 
 
     function handleSlide(type){
@@ -194,6 +214,12 @@ function Tour(props){
                             <div className="images-catalog">
                                 <h1>{photosPage.photosTitle}</h1>
                                 {renderCatalogImages(currentLanguage)}
+
+                                {   loading &&
+                                    <div className="animation-container">
+                                        <Lottie width="8%" height="100%" options={{animationData: require('../../assets/animations/loading.json')}} />
+                                    </div>
+                                }
                             </div>
                         }
                     </div>
