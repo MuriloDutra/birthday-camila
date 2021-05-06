@@ -11,14 +11,14 @@ function ImageContainer(props){
     const [englishDescription, setEnglishDescription] = useState('')
     const [portugueseDescription, setPortugueseDescription] = useState('')
     const [imageName, setImageName] = useState('')
-    const { photo, toggleFeedback, callback, approvedPhotos, disapprovedPhotos } = props
+    const { photo, toggleFeedback, handlePhotoUpdate, defaultCallback, approvedPhotos, disapprovedPhotos } = props
 
 
     function approveImage(imageId){
         approvePhotoById(imageId)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
@@ -34,7 +34,7 @@ function ImageContainer(props){
         disapprovePhotoById(imageId)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
@@ -50,7 +50,7 @@ function ImageContainer(props){
         deletePhoto(imageId)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
@@ -77,14 +77,14 @@ function ImageContainer(props){
         updatePhoto(imageId, body)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                handlePhotoUpdate()
 
                 setEnglishDescription('')
                 setPortugueseDescription('')
                 setImageName('')
             })
             .catch(error => {
-                if(error.response.data.error){
+                if(error.response && error.response.data.error){
                     toggleFeedback(true, findMessage(error.response.data.error))
                 }else{
                     toggleFeedback(true, showRegularMessage(false))
@@ -97,7 +97,7 @@ function ImageContainer(props){
         highlightPhotoById(imageId)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                handlePhotoUpdate()
             })
             .catch(error => {
                 if(error.response.data.error){
@@ -113,7 +113,7 @@ function ImageContainer(props){
         unhighlightPhotoById(imageId)
             .then(data => {
                 toggleFeedback(false, findMessage(data.message))
-                callback()
+                handlePhotoUpdate()
             })
             .catch(error => {
                 if(error.response.data.error){

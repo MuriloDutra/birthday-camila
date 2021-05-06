@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getDisapprovedPhotos } from '../../services/request'
+import { getApprovedPhotos, getDisapprovedPhotos, getPhotoById } from '../../services/request'
 import './Dashboard.scss'
 import Consumer from '../../context/ApplicationContext'
 import ImageContainer from '../../components/imageContainer/ImageContainer'
@@ -89,9 +89,17 @@ function Dashboard(props){
     }
 
 
-    function handlePhotoUpdate(indexPhoto){
+    function defaultCallback(indexPhoto){
         let newPhotosArray = [...photos]
         newPhotosArray.splice(indexPhoto, 1)
+        setPhotos(newPhotosArray)
+    }
+
+
+    async function handlePhotoUpdate(photoId, indexPhoto){
+        let newPhotosArray = [...photos]
+        const photo = await getPhotoById(photoId)
+        newPhotosArray[indexPhoto] = photo
         setPhotos(newPhotosArray)
     }
 
@@ -167,7 +175,8 @@ function Dashboard(props){
                                             disapprovedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => handlePhotoUpdate(index)}
+                                            defaultCallback={() => defaultCallback(index)}
+                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
                                         />
                                     )
                                 })
@@ -180,7 +189,8 @@ function Dashboard(props){
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => handlePhotoUpdate(index)}
+                                            defaultCallback={() => defaultCallback(index)}
+                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
                                         />
                                     )
                                 })
@@ -194,7 +204,8 @@ function Dashboard(props){
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => handlePhotoUpdate(index)}
+                                            defaultCallback={() => defaultCallback(index)}
+                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
                                         />
                                     )
                                 })
@@ -208,7 +219,8 @@ function Dashboard(props){
                                             approvedPhotos
                                             toggleFeedback={toggleFeedback}
                                             photo={photo}
-                                            callback={() => handlePhotoUpdate(index)}
+                                            defaultCallback={() => defaultCallback(index)}
+                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
                                         />
                                     )
                                 })
