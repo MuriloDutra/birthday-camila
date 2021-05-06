@@ -7,6 +7,7 @@ import Consumer from '../../context/ApplicationContext'
 import ImageContainer from '../../components/imageContainer/ImageContainer'
 import { TOKEN } from '../../constants/sessionStorageKeys'
 import { findMessage, showRegularMessage } from '../../helpers'
+import Lottie from 'lottie-react-web'
 
 
 function Dashboard(props){
@@ -14,7 +15,21 @@ function Dashboard(props){
     const [photos, setPhotos] = useState([])
     const [selectedTab, setSelectedTab] = useState('approved')//approved, waitingEvaluation
     const [searchText, setSearchText] = useState('')
+    const [page, setPage] = useState(0)
+    const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { toggleFeedback } = props
+
+
+    window.onscroll = function() {
+        if((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+            if(loadedAllPhotos){
+                return
+            }
+
+            loadPhotosData()
+        }
+    };
 
 
     useEffect(() => {
@@ -22,43 +37,56 @@ function Dashboard(props){
             props.history.replace('/login')
             props.toggleFeedback(true, 'Permissão negada.')
         }
+
+        loadPhotosData()
     }, [])
 
 
     useEffect(() => {
-        if(selectedTab === 'waitingEvaluation'){
-            getDisapprovedPhotos()
-                .then(data => {
-                    setPhotos(data)
-                })
-                .catch(error => {
-                    if(error.response && error.response.data.error){
-                        toggleFeedback(true, findMessage(error.response.data.error))
-                    }else{
-                        showRegularMessage(false)
-                    }
-
-                    setPhotos([])
-                })
-        }else{
-            getApprovedPhotos()
-                .then(data => {
-                    setPhotos(data)
-                })
-                .catch(error => {
-                    setPhotos([])
-                    showRegularMessage(false)
-                })
-        }
+        loadPhotosData()
     }, [selectedTab])
 
 
-    function callback(){
-        if(selectedTab === 'waitingEvaluation'){
-            getDisapprovedPhotos().then(data => setPhotos(data))
-        }else{
-            getApprovedPhotos().then(data => setPhotos(data))
+    async function loadPhotosData(){
+        try {
+            setLoading(true)
+            let results = []
+
+            if(selectedTab === 'waitingEvaluation'){
+                results = await getDisapprovedPhotos(page + 1)
+            }else{
+                results = await getApprovedPhotos(page + 1)
+            }
+
+            setPhotos([...photos, ...results])
+            setPage(page + 1)
+            
+            if(results.length < 15){
+                setLoadedAllPhotos(true)
+            }
+        }catch(error){
+            handleError(error)
+            setPhotos([])
         }
+
+        setLoading(false)
+    }
+
+
+    function handleError(error){
+        if(error.response && error.response.data.error){
+            toggleFeedback(true, findMessage(error.response.data.error))
+        }else{
+            toggleFeedback(true, showRegularMessage(false))
+        }
+    }
+
+
+    function callback(){
+        setPhotos([])
+        setPage(0)
+        setLoadedAllPhotos(false)
+        loadPhotosData()
     }
 
 
@@ -87,6 +115,14 @@ function Dashboard(props){
     }
 
 
+    function handleOnClickTab(tab){
+        setPhotos([])
+        setPage(0)
+        setLoadedAllPhotos(false)
+        setSelectedTab(tab)
+    }
+
+
     return (
         <Consumer>
             {   context => {
@@ -97,11 +133,11 @@ function Dashboard(props){
                         <SendPhotosContainer dashboardVersion toggleFeedback={toggleFeedback} callback={callback} />
 
                         <div className="main-menu">
-                            <p onClick={() => setSelectedTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
+                            <p onClick={() => handleOnClickTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
                                 {dashBoardPage.approvedPhotos}
                             </p>
                             
-                            <p onClick={() => setSelectedTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
+                            <p onClick={() => handleOnClickTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
                                 {dashBoardPage.disapprovedPhotos}
                             </p>
                         </div>
@@ -162,6 +198,12 @@ function Dashboard(props){
                                         />
                                     )
                                 })
+                            }
+
+                            {   loading &&
+                                <div className="animation-container">
+                                    <Lottie width="8%" height="100%" options={{animationData: require('../../assets/animations/loading.json')}} />
+                                </div>
                             }
                         </div>
                     </div>

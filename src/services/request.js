@@ -34,8 +34,8 @@ export const sendPhotos = (body) => {
 }
 
 //GET
-export const getPhotos = () => {
-    return axiosInstance.get('getPhotos')
+export const getPhotos = (page) => {
+    return axiosInstance.get(`getPhotos?pageNumber=${page}&pageSize=15`)
         .then(response => response.data)
 }
 
@@ -44,18 +44,18 @@ export const getPhotoById = (imageId) => {
         .then(response => response.data)
 }
 
-export const getApprovedPhotos = () => {
-    return axiosInstance.get('getApprovedPhotos')
+export const getApprovedPhotos = (page) => {
+    return axiosInstance.get(`getApprovedPhotos?pageNumber=${page}&pageSize=15`)
         .then(response => response.data)
 }
 
-export const getDisapprovedPhotos = () => {
-    return axiosInstance.get('getDisapprovedPhotos')
+export const getDisapprovedPhotos = (page) => {
+    return axiosInstance.get(`getDisapprovedPhotos?pageNumber=${page}&pageSize=15`)
         .then(response => response.data)
 }
 
-export const getHighlightPhotos = () => {
-    return axiosInstance.get('getHighlightPhotos')
+export const getHighlightPhotos = (page) => {
+    return axiosInstance.get(`getHighlightPhotos?pageNumber=${page}&pageSize=15`)
         .then(response => response.data)
 }
 
