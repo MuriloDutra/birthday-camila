@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Tour.scss'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos } from '../../services/request'
+import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
 import Lottie from 'lottie-react-web'
 
 
@@ -21,60 +21,45 @@ function Tour(props){
 
     window.onscroll = function(ev) {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if(loadedAllPhotos){
-                return
-            }
-
-            loadPhotosData()
+            if(!loadedAllPhotos)
+                loadPhotosData()
         }
     };
 
     
-    useEffect(() => {
-        loadPhotosData()
-    }, [])
+    useEffect(() => loadPhotosData(), [])
 
 
     function loadPhotosData(){
         setLoading(true)
 
+        getHighlightPhotos()
+            .then((images) => setHighlightedImages(images))
+
         getApprovedPhotos(page + 1)
-            .then((data) => {
-                let highlightedItems = []
-                let otherItems = []
-
-                data.forEach((image) => {
-                    if(image.highlightImage == 1){
-                        highlightedItems.push(image)
-                    }else{
-                        otherItems.push(image)
-                    }
-                })
-
-                setHighlightedImages([...highlightedImages, ...highlightedItems])
-                setCommonPhotos([...commonPhotos,...otherItems])
+            .then((approved_images) => {
+                setCommonPhotos([...commonPhotos,...approved_images])
                 setPage(page + 1)
 
-                if(data.length < 15){
-                    setLoadedAllPhotos(true)
-                }
+                if(approved_images.length < 15)
+                    setLoadedAllPhotos(true);
             })
             .finally(() => setLoading(false))
     }
 
-
     function handleSlide(type){
-        if(type === 'forward' && currentImage !== 2){
-            setCurrentImage(currentImage + 2)
-        }else if(type === 'back' && currentImage !== 0){
-            setCurrentImage(currentImage - 2)
-        }
-
-        if(type === 'forward' && currentImage === 2){
-            setCurrentImage(0)
-        }else if(type === 'back' && currentImage === 0){
-            setCurrentImage(2)
-        }
+        const go_to_beginning = (!highlightedImages[currentImage + 1] || !highlightedImages[currentImage + 2]);
+        const go_to_end = (currentImage === 0);
+        if(go_to_beginning && type === 'forward')
+            setCurrentImage(0);
+        else if(go_to_end && type === 'back'){
+            highlightedImages.length % 2 === 0
+                ? setCurrentImage(highlightedImages.length - 2)
+                : setCurrentImage(highlightedImages.length - 1)
+        }else if(type === 'forward')
+            setCurrentImage(currentImage + 1); 
+        else if(type === 'back')
+            setCurrentImage(currentImage - 1);
     }
 
 
@@ -83,16 +68,14 @@ function Tour(props){
         let imageContainer = {}
 
         commonPhotos.forEach((image, index) => {
-            if(index % 2 == 0){
+            if(index % 2 === 0){
                 imageContainer.firstImage = image
                 
-                if(!commonPhotos[index +  1]){
+                if(!commonPhotos[index +  1])
                     arrayOfContainer.push(imageContainer)
-                }
             }else{
                 imageContainer.secondImage = image
                 arrayOfContainer.push(imageContainer)
-
                 imageContainer = {}
             }
         })
@@ -111,14 +94,14 @@ function Tour(props){
                 <div className="image-row" key={firstImage ? firstImage.id : index}>
                     {   firstImage &&
                         <div className="container-first-image">
-                            <img src={firstImage.imageUrl} onClick={() => handleImageClick(firstImage)} className="normal-image" alt={firstImageDescription} />
+                            <img src={firstImage.imageUrl} onClick={() => handleImageClick(firstImage)} className="normal-image" alt={firstImageDescription}/>
                             <p className="photo-description">{firstImageDescription}</p>
                         </div>
                     }
 
                     {   secondImage &&
                         <div className="container-second-image">
-                            <img src={secondImage.imageUrl} onClick={() => handleImageClick(secondImage)} className="normal-image" alt={secondImageDescription} />
+                            <img src={secondImage.imageUrl} onClick={() => handleImageClick(secondImage)} className="normal-image" alt={secondImageDescription}/>
                             <p className="photo-description">{secondImageDescription}</p>
                         </div>
                     }
@@ -153,12 +136,10 @@ function Tour(props){
                 if(highlightedImages.length > 0){
                     var firstImage = highlightedImages[currentImage]
                     var firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
-
                     var secondImage = highlightedImages[currentImage + 1]
 
-                    if(secondImage){
+                    if(secondImage)
                         var secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
-                    }
                 }
 
                 return (
@@ -197,8 +178,8 @@ function Tour(props){
                                             </p>
                                         </div>
                                     }
-                                    
                                 </div>
+
                                 {   highlightedImages.length > 2 &&
                                     <div className="arrows-container">
                                         <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
