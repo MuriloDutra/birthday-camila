@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { faChevronLeft, faChevronRight, faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import './Tour.scss'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
 import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
 import Lottie from 'lottie-react-web'
+import './Tour.scss'
 
 
 function Tour(props){
     const [currentImage, setCurrentImage] = useState(0)
-    const [overlayImage, setOverlayImage] = useState('')
+    const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
     const [page, setPage] = useState(0)
@@ -126,6 +126,28 @@ function Tour(props){
         document.body.removeChild(downloadLink)
     }
 
+    function render_highlights_images(current_language){
+        return highlightedImages.map((image) => {
+            let image_alt = current_language === 'EN-US' ? image.englishDescription : image.portugueseDescription
+
+            return (
+                <div className="image-container">
+                    <img
+                        src={image.imageUrl}
+                        alt={image_alt}
+                        onClick={() => handleImageClick(image)}
+                    />
+                    {/*<p>
+                        {   current_language === 'EN-US'
+                            ? image.englishDescription
+                            : image.portugueseDescription
+                        }
+                    </p>*/}
+                </div>
+            )
+        })
+    }
+
     
     return (
         <Consumer>
@@ -135,57 +157,15 @@ function Tour(props){
     
                 if(highlightedImages.length > 0){
                     var firstImage = highlightedImages[currentImage]
-                    var firstImageAlt = currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
-                    var secondImage = highlightedImages[currentImage + 1]
-
-                    if(secondImage)
-                        var secondImageAlt = currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
                 }
 
                 return (
                 <>
                     <div className="tour-body">
+                        
                         {   highlightedImages.length > 0 &&
-                            <div className="slide-container">
-                                <div className="slide">
-                                    <div className="container-first-image">
-                                        <img
-                                            className="main-image"
-                                            alt={firstImageAlt}
-                                            src={firstImage.imageUrl}
-                                            onClick={() => handleImageClick(firstImage)}
-                                        />
-                                        <p className="photo-description">
-                                            {   currentLanguage === 'EN-US'
-                                                ? firstImage.englishDescription
-                                                : firstImage.portugueseDescription
-                                            }
-                                        </p>
-                                    </div>
-                                    {   secondImage && 
-                                        <div className="container-second-image">
-                                            <img
-                                                className="main-image"
-                                                alt={secondImageAlt}
-                                                src={secondImage.imageUrl}
-                                                onClick={() => handleImageClick(secondImage)}
-                                            />
-                                            <p className="photo-description">
-                                                {   currentLanguage === 'EN-US'
-                                                    ? secondImage.englishDescription
-                                                    : secondImage.portugueseDescription
-                                                }
-                                            </p>
-                                        </div>
-                                    }
-                                </div>
-
-                                {   highlightedImages.length > 2 &&
-                                    <div className="arrows-container">
-                                        <FontAwesomeIcon onClick={() => handleSlide('back')} className="arrow left-arrow" icon={faChevronLeft} />
-                                        <FontAwesomeIcon onClick={() => handleSlide('forward')} className="arrow right-arrow" icon={faChevronRight} />  
-                                    </div>
-                                }
+                            <div className="slides-container">
+                                {render_highlights_images(currentLanguage)}
                             </div>
                         }
 
@@ -205,12 +185,12 @@ function Tour(props){
                         }
                     </div>
                 
-                    {   overlayImage !== '' &&
+                    {   overlayImage &&
                         <div className="image-overlay">
                             <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
                             <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
                             <img
-                                alt={currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription}
+                                alt={currentLanguage === 'EN-US' ? overlayImage.imageUrl.englishDescription : overlayImage.imageUrl.portugueseDescription}
                                 src={overlayImage.imageUrl}
                             />
                         </div>
