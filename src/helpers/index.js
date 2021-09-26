@@ -6,14 +6,15 @@ import { LANGUAGE } from "../constants/sessionStorageKeys"
 export function findMessage(messageParam){
     let fallbackMessage = null
     const currentLanguage = sessionStorage.getItem(LANGUAGE)
+    const isItAnError = (messageParam.search("error_") !== -1)
     var match = null
 
     if(currentLanguage === 'PT-BR'){
-        fallbackMessage = 'Successo'
-        match = Object.values(portugueseLabels.messages).find((message) => message.value === messageParam).display
+        fallbackMessage = isItAnError ? "Um erro desconhecido ocorreu " : 'Ação realizada com sucesso.'
+        match = Object.values(portugueseLabels.messages).find((message) => message.value === messageParam)?.display
     }else if(currentLanguage === 'EN-US'){
-        fallbackMessage = 'Success'
-        match = Object.values(englishLabels.messages).find((message) => message.value === messageParam).display
+        fallbackMessage = isItAnError ? "An unknown error happened " : 'Done.'
+        match = Object.values(englishLabels.messages).find((message) => message.value === messageParam)?.display
     }
 
     if(match){

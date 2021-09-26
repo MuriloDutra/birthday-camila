@@ -44,9 +44,8 @@ export const englishLabels = {
         }
     },
     messages:{
-        //error messages
-        photo_not_found: {
-            value: "photo_not_found",
+        error_photo_not_found: {
+            value: "error_photo_not_found",
             display: "Photo not found."
         },
         error_to_get_user: {
@@ -105,41 +104,46 @@ export const englishLabels = {
             value: 'error_to_delete_photo',
             display: 'It was not possible to delete the photo.',
         },
-        user_not_found: {
-            value: 'user_not_found',
+        error_user_not_found: {
+            value: 'error_user_not_found',
             display: 'User not found.',
         },
-        //success messages
-        photos_received: {
-            value: 'photos_received',
+        error_already_ten_highlighted_photos: {
+            value: 'error_already_ten_highlighted_photos',
+            display: 'You reached the maximum amount of highlight photos.',
+        },
+
+
+        success_photos_received: {
+            value: 'success_photos_received',
             display: "Photos sent.",
         },
-        photo_received: {
-            value: 'photo_received',
+        success_photo_received: {
+            value: 'success_photo_received',
             display: "Photo sent.",
         },
-        photo_was_updated: {
-            value: 'photo_was_updated',
+        success_photo_was_updated: {
+            value: 'success_photo_was_updated',
             display: "Photo updated.",
         },
-        photo_was_approved: {
-            value: 'photo_was_approved',
+        success_photo_was_approved: {
+            value: 'success_photo_was_approved',
             display: "Photo approved.",
         },
-        photo_was_disapproved: {
-            value: 'photo_was_disapproved',
+        success_photo_was_disapproved: {
+            value: 'success_photo_was_disapproved',
             display: "Photo disapproved",
         },
-        photo_was_highlighted: {
-            value: 'photo_was_highlighted',
+        success_photo_was_highlighted: {
+            value: 'success_photo_was_highlighted',
             display: "Photo highlighted",
         },
-        photo_was_unhighlighted: {
-            value: 'photo_was_unhighlighted',
+        success_photo_was_unhighlighted: {
+            value: 'success_photo_was_unhighlighted',
             display: "Photo unhighlighted",
         },
-        photo_deleted: {
-            value: 'photo_deleted',
+        success_photo_deleted: {
+            value: 'success_photo_deleted',
             display: "Photo deleted",
         },
     }

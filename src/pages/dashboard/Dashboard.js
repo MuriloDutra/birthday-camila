@@ -122,7 +122,7 @@ function Dashboard(props){
         });
 
         if(results.length === 0 && searchText.length > 0){
-            toggleFeedback(true, findMessage('photo_not_found'))
+            toggleFeedback(true, findMessage('error_photo_not_found'))
         }
 
         setFilteredPhotos(results)
