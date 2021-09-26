@@ -108,6 +108,10 @@ export const portugueseLabels = {
             value: 'error_already_ten_highlighted_photos',
             display: 'Você atingiu a quantidade máxima para destacar imagens.',
         },
+        error_not_allowed_disapproved_photo: {
+            value: 'error_not_allowed_disapproved_photo',
+            display: 'Acão não permitida, esta foto não está aprovada.',
+        },
 
 
         success_photos_received: {

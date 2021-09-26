@@ -112,7 +112,10 @@ export const englishLabels = {
             value: 'error_already_ten_highlighted_photos',
             display: 'You reached the maximum amount of highlight photos.',
         },
-
+        error_not_allowed_disapproved_photo: {
+            value: 'error_not_allowed_disapproved_photo',
+            display: 'Not allowed, this photo is not approved.',
+        },
 
         success_photos_received: {
             value: 'success_photos_received',
