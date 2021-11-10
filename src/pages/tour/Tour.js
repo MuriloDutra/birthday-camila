@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { faTimes, faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faDownload, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
 import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
 import Lottie from 'lottie-react-web'
+import SimpleImageSlider from "react-simple-image-slider";
 import './Tour.scss'
 
 
 function Tour(props){
+    const { toggleFeedback } = props
+
     const [currentImage, setCurrentImage] = useState(0)
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
@@ -16,7 +19,6 @@ function Tour(props){
     const [page, setPage] = useState(0)
     const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { toggleFeedback } = props
 
 
     window.onscroll = function(ev) {
@@ -34,7 +36,10 @@ function Tour(props){
         setLoading(true)
 
         getHighlightPhotos()
-            .then((images) => setHighlightedImages(images))
+            .then((images) => {
+                images?.forEach((img) => img.url = img?.imageUrl)
+                setHighlightedImages(images)
+            })
 
         getApprovedPhotos(page + 1)
             .then((approved_images) => {
@@ -46,22 +51,6 @@ function Tour(props){
             })
             .finally(() => setLoading(false))
     }
-
-    function handleSlide(type){
-        const go_to_beginning = (!highlightedImages[currentImage + 1] || !highlightedImages[currentImage + 2]);
-        const go_to_end = (currentImage === 0);
-        if(go_to_beginning && type === 'forward')
-            setCurrentImage(0);
-        else if(go_to_end && type === 'back'){
-            highlightedImages.length % 2 === 0
-                ? setCurrentImage(highlightedImages.length - 2)
-                : setCurrentImage(highlightedImages.length - 1)
-        }else if(type === 'forward')
-            setCurrentImage(currentImage + 1); 
-        else if(type === 'back')
-            setCurrentImage(currentImage - 1);
-    }
-
 
     function renderCatalogImages(currentLanguage){
         let arrayOfContainer = []
@@ -137,17 +126,10 @@ function Tour(props){
                         alt={image_alt}
                         onClick={() => handleImageClick(image)}
                     />
-                    {/*<p>
-                        {   current_language === 'EN-US'
-                            ? image.englishDescription
-                            : image.portugueseDescription
-                        }
-                    </p>*/}
                 </div>
             )
         })
     }
-
     
     return (
         <Consumer>
@@ -162,10 +144,15 @@ function Tour(props){
                 return (
                 <>
                     <div className="tour-body">
-                        
                         {   highlightedImages.length > 0 &&
-                            <div className="slides-container">
-                                {render_highlights_images(currentLanguage)}
+                            <div className="slider-container">
+                                <SimpleImageSlider
+                                    width={"70%"}
+                                    height={604}
+                                    images={highlightedImages}
+                                    showBullets={true}
+                                    showNavs={true}
+                                />
                             </div>
                         }
 
