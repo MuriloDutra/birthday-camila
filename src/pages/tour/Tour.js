@@ -28,7 +28,7 @@ function Tour(props){
     };
     
     useEffect(() => {
-        //document.title = "Photos from Camila Styles birthday"; 
+        document.title = "Photos from Camila Styles birthday"; 
         loadPhotosData()
     }, [])
 
