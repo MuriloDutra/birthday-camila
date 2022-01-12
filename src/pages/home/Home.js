@@ -13,11 +13,6 @@ import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 function Home() {
   const [isSongPlaying, setIsSongPlaying] = useState(false)
 
-  useEffect(() => {
-    document.title = 'Camila Araújo'
-  }, [])
-
-
   function toggleThemeSong(value){
     const songPlayer = document.getElementById('song-player')
     
@@ -33,7 +28,6 @@ function Home() {
     setIsSongPlaying(value)
   }
   
-
   return (
     <Consumer>
       { context => {
