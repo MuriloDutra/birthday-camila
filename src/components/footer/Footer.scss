@@ -1,19 +1,22 @@
 @import '../../assets/colors.scss';
 
 .links-container{
-    padding: 2% 0% 2% 33%;
+    padding: 2% 0% 2% 0%;
 
     .links{
         list-style: none;
         display: flex;
-
-        li{
+        justify-content: center;
+    
+        li, .footer-link{
             color: $white;
             margin-right: 20px;
             font-size: 25px;
+            text-transform: uppercase;
+            text-decoration: none;
         }
 
-        li:hover{
+        li:hover, .footer-link:hover{
             color: $pink;
             cursor: pointer;
         }
@@ -34,7 +37,7 @@
         .links{
             padding: 0% 0% 0% 5%;
 
-            li{
+            li, .footer-link{
                 font-size: 20px;
             }
         }

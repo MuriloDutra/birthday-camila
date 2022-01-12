@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { faTimes, faDownload, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import React, { useEffect, useState, Fragment } from 'react'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Consumer from '../../context/ApplicationContext'
 import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
@@ -10,9 +10,9 @@ import './Tour.scss'
 
 
 function Tour(props){
+    //PROPS
     const { toggleFeedback } = props
-
-    const [currentImage, setCurrentImage] = useState(0)
+    //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
@@ -20,17 +20,17 @@ function Tour(props){
     const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
     const [loading, setLoading] = useState(false)
 
-
     window.onscroll = function(ev) {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if(!loadedAllPhotos)
                 loadPhotosData()
         }
     };
-
     
-    useEffect(() => loadPhotosData(), [])
-
+    useEffect(() => {
+        //document.title = "Photos from Camila Styles birthday"; 
+        loadPhotosData()
+    }, [])
 
     function loadPhotosData(){
         setLoading(true)
@@ -136,10 +136,6 @@ function Tour(props){
             {   context => {
                 const { currentLanguage } = context
                 const { photosPage } = context.language
-    
-                if(highlightedImages.length > 0){
-                    var firstImage = highlightedImages[currentImage]
-                }
 
                 return (
                 <>
@@ -173,14 +169,16 @@ function Tour(props){
                     </div>
                 
                     {   overlayImage &&
-                        <div className="image-overlay">
-                            <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
-                            <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                        <Fragment>
+                            <div className="overlay" onClick={() => setOverlayImage('')}>
+                                <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                            </div>
                             <img
                                 alt={currentLanguage === 'EN-US' ? overlayImage.imageUrl.englishDescription : overlayImage.imageUrl.portugueseDescription}
                                 src={overlayImage.imageUrl}
+                                className="image-overlay"
                             />
-                        </div>
+                        </Fragment>
                     }
                 </>
                 )
