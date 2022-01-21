@@ -7,7 +7,7 @@ import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
 import Lottie from 'lottie-react-web'
 import SimpleImageSlider from "react-simple-image-slider";
 import './Tour.scss'
-
+import { Helmet } from 'react-helmet'
 
 function Tour(props){
     //PROPS
@@ -28,7 +28,6 @@ function Tour(props){
     };
     
     useEffect(() => {
-        document.title = "Photos from Camila Styles birthday"; 
         loadPhotosData()
     }, [])
 
@@ -114,22 +113,6 @@ function Tour(props){
         downloadLink.click()
         document.body.removeChild(downloadLink)
     }
-
-    function render_highlights_images(current_language){
-        return highlightedImages.map((image) => {
-            let image_alt = current_language === 'EN-US' ? image.englishDescription : image.portugueseDescription
-
-            return (
-                <div className="image-container">
-                    <img
-                        src={image.imageUrl}
-                        alt={image_alt}
-                        onClick={() => handleImageClick(image)}
-                    />
-                </div>
-            )
-        })
-    }
     
     return (
         <Consumer>
@@ -140,6 +123,11 @@ function Tour(props){
                 return (
                 <>
                     <div className="tour-body">
+                        <Helmet>
+                            <title>Photos from Camila Styles birthday</title>
+                            <meta name="description" content="Photos from Camila Styles birthday party, here you can see the greatest moments of it." />
+                        </Helmet>
+
                         {   highlightedImages.length > 0 &&
                             <div className="slider-container">
                                 <SimpleImageSlider
@@ -186,6 +174,5 @@ function Tour(props){
         </Consumer>
     )
 }
-
 
 export default Tour
