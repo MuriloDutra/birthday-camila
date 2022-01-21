@@ -13,25 +13,25 @@ function Footer(props){
                     <div className="links-container">
                         <ul className="links">
                             <Link
-                                className="footer-link"
+                                className="footer-link no-text-decoration"
                                 to="/"
                             >
                                 {footer.firstLink}
                             </Link>
                             <Link
-                                className="footer-link"
+                                className="footer-link no-text-decoration"
                                 to="/"
                             >
                                 {footer.secondLink}
                             </Link>
                             <Link
-                                className="footer-link"
+                                className="footer-link no-text-decoration"
                                 to="/"
                             >
                                 {footer.thridLink}
                             </Link>
                             <Link
-                                className="footer-link"
+                                className="footer-link no-text-decoration"
                                 to="/photos"
                             >
                                 {footer.fourthLink}

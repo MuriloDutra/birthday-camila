@@ -3,18 +3,40 @@ import './Header.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faInstagram, faTwitter} from '@fortawesome/free-brands-svg-icons'
 import LanguageOptions from '../languageOptions/LanguageOptions'
-
+import { Link } from 'react-router-dom'
 
 function Header(props){
     return (
-        <div className="header">
-            <h1 onClick={() => window.location.pathname = '/'}>CAMILA STYLES</h1>
+        <header className="header">
+            <Link to="/" className="title no-text-decoration">
+                CAMILA STYLES
+            </Link>
+
             <div className="icon-container">
-                <FontAwesomeIcon onClick={() => window.open('https://twitter.com/Ca_araujop?s=08')} className="icon" icon={faTwitter} />
-                <FontAwesomeIcon onClick={() => window.open('https://www.instagram.com/camilis_araujo/')} className="icon" icon={faInstagram} />
+                <a
+                    href="https://twitter.com/Ca_araujop?s=08"
+                    target="_blank"
+                    className="no-text-decoration"
+                >
+                    <FontAwesomeIcon
+                        className="icon"
+                        icon={faTwitter}
+                    />
+                </a>
+
+                <a
+                    href="https://www.instagram.com/camilis_araujo/"
+                    target="_blank"
+                    className="no-text-decoration"
+                >
+                    <FontAwesomeIcon
+                        className="icon"
+                        icon={faInstagram}
+                    />
+                </a>
             </div>
             <LanguageOptions />
-        </div>
+        </header>
     )
 }
 

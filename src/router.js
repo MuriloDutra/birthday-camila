@@ -35,10 +35,10 @@ function Router(props){
 
     return (
         <>
-            <Header />
             <Feedback showMessage={showMessage} isErrorMessage={isErrorMessage} message={message} />
 
             <BrowserRouter>
+                <Header />
                 <Switch>
                     <Route exact path="/">
                         <Home toggleFeedback={toggleFeedback} />
