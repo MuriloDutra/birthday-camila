@@ -1,0 +1,18 @@
+@import 'assets/colors.scss';
+
+.linktree-container{
+    display: flex;
+    
+    span{
+        margin: 10px 10px 10px 0px;
+        font-size: 20px;
+        text-decoration: underline;
+        color: $pink;
+    }
+
+    .arrow{
+        margin: 0px 10px 0px 5px;
+        padding: 0px;
+        text-decoration: none;
+    }
+}

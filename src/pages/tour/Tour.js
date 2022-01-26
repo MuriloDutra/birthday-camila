@@ -1,9 +1,9 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Consumer from '../../context/ApplicationContext'
-import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
+import Consumer from 'context/ApplicationContext'
+import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContainer'
+import { getApprovedPhotos, getHighlightPhotos } from 'services/request'
 import Lottie from 'lottie-react-web'
 import SimpleImageSlider from "react-simple-image-slider";
 import './Tour.scss'

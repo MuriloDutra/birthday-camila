@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './components/header/Header'
 import Feedback from './components/feedback/Feedback'
@@ -8,6 +8,7 @@ import ErrorPage from './pages/errorPage/ErrorPage'
 import Home from './pages/home/Home'
 import Tour from './pages/tour/Tour'
 import Dashboard from './pages/dashboard/Dashboard'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 
 
 function Router(props){
@@ -38,7 +39,8 @@ function Router(props){
             <Feedback showMessage={showMessage} isErrorMessage={isErrorMessage} message={message} />
 
             <BrowserRouter>
-                <Header />
+                <OnRouteChange />
+
                 <Switch>
                     <Route exact path="/">
                         <Home toggleFeedback={toggleFeedback} />
@@ -65,5 +67,19 @@ function Router(props){
     )
 }
 
-
 export default Router
+
+function OnRouteChange(){
+    //STATE
+    const [showLinkTree, setShowLinkTree] = useState(false)
+    //OTHERS
+    const location = useLocation()
+
+    useEffect(() => {
+        setShowLinkTree(location?.pathname !== "/")
+    }, [location?.pathname])
+
+    return (
+        <Header showLinkTree={showLinkTree} />
+    );
+}
