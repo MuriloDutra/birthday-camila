@@ -1,65 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import Header from './components/header/Header'
-import Feedback from './components/feedback/Feedback'
 
 import Login from './pages/login/Login'
-import ErrorPage from './pages/errorPage/ErrorPage'
 import Home from './pages/home/Home'
 import Tour from './pages/tour/Tour'
 import Dashboard from './pages/dashboard/Dashboard'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
+import { showToast } from 'helpers'
 
 
 function Router(props){
-    const [showMessage, setShowMessage] = useState(false)
-    const [isErrorMessage, setIsErrorMessage] = useState(false)
-    const [message, setMessage] = useState('')
-    var timeout = null
-
-
-    async function toggleFeedback(isNegativeMessage, text){
-        if(showMessage){
-            return
-        }
-
-        setIsErrorMessage(isNegativeMessage)//true === Negative message
-        setMessage(text)
-        setShowMessage(true)
-
-        timeout = setTimeout(() => {
-            setShowMessage(false)
-            clearTimeout(timeout)
-        }, 6000)
-    }
-
 
     return (
         <>
-            <Feedback showMessage={showMessage} isErrorMessage={isErrorMessage} message={message} />
-
             <BrowserRouter>
                 <OnRouteChange />
 
                 <Switch>
                     <Route exact path="/">
-                        <Home toggleFeedback={toggleFeedback} />
+                        <Home />
                     </Route>
 
                     <Route exact path="/photos">
-                        <Tour toggleFeedback={toggleFeedback} />
+                        <Tour />
                     </Route>
 
                     <Route exact path="/login">
-                        <Login toggleFeedback={toggleFeedback} />
+                        <Login />
                     </Route>
 
                     <Route exact path="/dashboard">
-                        <Dashboard toggleFeedback={toggleFeedback} />
+                        <Dashboard />
                     </Route>
 
                     <Route path="*">
-                        <ErrorPage />
+                        <CustomRedirect to={"/"} />
                     </Route>
                 </Switch>
             </BrowserRouter>
@@ -82,4 +58,14 @@ function OnRouteChange(){
     return (
         <Header showLinkTree={showLinkTree} />
     );
+}
+
+function CustomRedirect(){
+    useEffect(() => {
+        showToast("Página não encontrada.", "error")
+    }, [])
+
+    return (
+        <Redirect to={"/"}/>
+    )
 }

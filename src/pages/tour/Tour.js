@@ -10,8 +10,6 @@ import './Tour.scss'
 import { Helmet } from 'react-helmet'
 
 function Tour(props){
-    //PROPS
-    const { toggleFeedback } = props
     //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
@@ -140,7 +138,7 @@ function Tour(props){
                             </div>
                         }
 
-                        <SendPhotosContainer toggleFeedback={toggleFeedback} />
+                        <SendPhotosContainer />
                         
                         {   commonPhotos.length > 0 &&
                             <div className="images-catalog">

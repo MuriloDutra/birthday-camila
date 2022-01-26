@@ -6,7 +6,7 @@ import './Dashboard.scss'
 import Consumer from '../../context/ApplicationContext'
 import ImageContainer from '../../components/imageContainer/ImageContainer'
 import { TOKEN } from '../../constants/sessionStorageKeys'
-import { findMessage, showRegularMessage } from '../../helpers'
+import { findMessage, showRegularMessage, showToast } from 'helpers'
 import Lottie from 'lottie-react-web'
 
 
@@ -18,7 +18,6 @@ function Dashboard(props){
     const [page, setPage] = useState(0)
     const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
     const [loading, setLoading] = useState(false)
-    const { toggleFeedback } = props
 
 
     window.onscroll = function() {
@@ -35,7 +34,7 @@ function Dashboard(props){
     useEffect(() => {
         if(!sessionStorage.getItem(TOKEN)){
             props.history.replace('/login')
-            props.toggleFeedback(true, 'Permissão negada.')
+            showToast('Permissão negada.', "error")
         }
 
         loadPhotosData()
@@ -75,9 +74,9 @@ function Dashboard(props){
 
     function handleError(error){
         if(error.response && error.response.data.error){
-            toggleFeedback(true, findMessage(error.response.data.error))
+            showToast(findMessage(error.response.data.error), "error")
         }else{
-            toggleFeedback(true, showRegularMessage(false))
+            showToast(showRegularMessage(false), "error")
         }
     }
 
@@ -122,7 +121,7 @@ function Dashboard(props){
         });
 
         if(results.length === 0 && searchText.length > 0){
-            toggleFeedback(true, findMessage('error_photo_not_found'))
+            showToast(findMessage('error_photo_not_found'), "error")
         }
 
         setFilteredPhotos(results)
@@ -146,7 +145,6 @@ function Dashboard(props){
                     <div className="dashboard-body">
                         <SendPhotosContainer
                             dashboardVersion
-                            toggleFeedback={toggleFeedback}
                             callback={() => { callback(); }}
                         />
 
@@ -173,7 +171,6 @@ function Dashboard(props){
                                     return (
                                         <ImageContainer
                                             disapprovedPhotos
-                                            toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             defaultCallback={() => defaultCallback(index)}
                                             handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
@@ -187,7 +184,6 @@ function Dashboard(props){
                                     return (
                                         <ImageContainer
                                             approvedPhotos
-                                            toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             defaultCallback={() => defaultCallback(index)}
                                             handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
@@ -202,7 +198,6 @@ function Dashboard(props){
                                     return (
                                         <ImageContainer
                                             approvedPhotos
-                                            toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             defaultCallback={() => defaultCallback(index)}
                                             handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
@@ -217,7 +212,6 @@ function Dashboard(props){
                                     return (
                                         <ImageContainer
                                             approvedPhotos
-                                            toggleFeedback={toggleFeedback}
                                             photo={photo}
                                             defaultCallback={() => defaultCallback(index)}
                                             handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}

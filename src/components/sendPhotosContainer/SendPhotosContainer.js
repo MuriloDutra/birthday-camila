@@ -4,12 +4,12 @@ import './SendPhotosContainer.scss'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { sendPhotos } from '../../services/request'
-import { findMessage, showRegularMessage } from '../../helpers'
+import { findMessage, showRegularMessage, showToast } from 'helpers'
 
 
 function SendPhotosContainer(props){
     const [selectedPhotos, setSelectedPhotos] = useState([])
-    const { dashboardVersion, toggleFeedback, callback } = props
+    const { dashboardVersion, callback } = props
 
 
     function toBase64(file){
@@ -31,7 +31,7 @@ function SendPhotosContainer(props){
 
     function handleSubmit(){
         if(selectedPhotos.length === 0){
-            toggleFeedback(true, 'Selecione pelo menos uma imagem.')
+            showToast('Selecione pelo menos uma imagem.', "error")
             return
         }
 
@@ -41,7 +41,7 @@ function SendPhotosContainer(props){
                 
                 sendPhotos(body)
                     .then(data => {
-                        toggleFeedback(false, findMessage(data.message))
+                        showToast(findMessage(data.message), "success")
 
                         if(callback){
                             callback()
@@ -50,9 +50,9 @@ function SendPhotosContainer(props){
                     })
                     .catch(error => {
                         if(error.response.data.error){
-                            toggleFeedback(true, findMessage(error.response.data.error))
+                            showToast(findMessage(error.response.data.error), "error")
                         }else{
-                            toggleFeedback(true, showRegularMessage(false))
+                            showToast(showRegularMessage(false), "error")
                         }
                     })
             })
