@@ -43,7 +43,7 @@ function Header(props){
             </div>
             
             {   showLinkTree &&
-                <div className="tour-linktree-container">
+                <div className="photo-linktree-container">
                     <Linktree />
                 </div>
             }

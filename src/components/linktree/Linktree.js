@@ -12,7 +12,7 @@ function Linktree(props){
                 >
             </span>
             <Link to={"/photos"}>
-                <span>Tour</span>
+                <span>Photos</span>
             </Link>
         </div>
     )

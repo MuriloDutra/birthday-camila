@@ -6,10 +6,10 @@ import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContai
 import { getApprovedPhotos, getHighlightPhotos } from 'services/request'
 import Lottie from 'lottie-react-web'
 import SimpleImageSlider from "react-simple-image-slider";
-import './Tour.scss'
+import './Photos.scss'
 import { Helmet } from 'react-helmet'
 
-function Tour(props){
+function Photos(props){
     //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
@@ -132,7 +132,7 @@ function Tour(props){
 
                 return (
                 <>
-                    <div className="tour-body">
+                    <div className="photos-body">
                         <Helmet>
                             <title>Photos from Camila Styles birthday</title>
                             <meta name="description" content="Photos from Camila Styles birthday party, here you can see the greatest moments of it." />
@@ -185,4 +185,4 @@ function Tour(props){
     )
 }
 
-export default Tour
+export default Photos

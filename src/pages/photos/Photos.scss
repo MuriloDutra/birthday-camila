@@ -1,5 +1,5 @@
 @import '../../assets/colors.scss';
-.tour-body{
+.photos-body{
     width: 100%;
     height: 100%;
     padding-top: 8%;
@@ -84,7 +84,7 @@
 }
 
 @media(max-width: 1024px){
-    .tour-body{
+    .photos-body{
         .images-catalog {
             .normal-image{
                 width: 90%;
@@ -115,7 +115,7 @@
 }
 
 @media(max-width: 767px){
-    .tour-body{
+    .photos-body{
         .images-catalog{
             .image-row{
                 div p{

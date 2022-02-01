@@ -4,7 +4,7 @@ import Header from './components/header/Header'
 
 import Login from './pages/login/Login'
 import Home from './pages/home/Home'
-import Tour from './pages/tour/Tour'
+import Photos from './pages/photos/Photos'
 import Dashboard from './pages/dashboard/Dashboard'
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min'
 import { showToast } from 'helpers'
@@ -23,7 +23,7 @@ function Router(props){
                     </Route>
 
                     <Route exact path="/photos">
-                        <Tour />
+                        <Photos />
                     </Route>
 
                     <Route exact path="/login">
