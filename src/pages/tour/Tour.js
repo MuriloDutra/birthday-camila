@@ -80,14 +80,26 @@ function Tour(props){
                 <div className="image-row" key={firstImage ? firstImage.id : index}>
                     {   firstImage &&
                         <div className="container-first-image">
-                            <img src={firstImage.imageUrl} onClick={() => handleImageClick(firstImage)} className="normal-image" alt={firstImageDescription}/>
+                            <img
+                                src={firstImage.imageUrl}
+                                onClick={() => handleImageClick(firstImage)}
+                                className="normal-image"
+                                alt={firstImageDescription}
+                                loading="lazy"
+                            />
                             <p className="photo-description">{firstImageDescription}</p>
                         </div>
                     }
 
                     {   secondImage &&
                         <div className="container-second-image">
-                            <img src={secondImage.imageUrl} onClick={() => handleImageClick(secondImage)} className="normal-image" alt={secondImageDescription}/>
+                            <img
+                                src={secondImage.imageUrl}
+                                onClick={() => handleImageClick(secondImage)}
+                                className="normal-image"
+                                alt={secondImageDescription}
+                                loading="lazy"
+                            />
                             <p className="photo-description">{secondImageDescription}</p>
                         </div>
                     }

@@ -7,7 +7,7 @@ export const englishLabels = {
             firstLink: 'Do you know who he is?',
             secondLink: 'Man band',
             thridLink: 'Boy band',
-            fourthLink: 'Tour'
+            fourthLink: 'Photos'
         },
         themeSong: "Listen the site's theme song!",
     },
