@@ -132,7 +132,7 @@ function ImageContainer(props){
                 
                 return (
                     <div key={photo.id} className="image-container">
-                        <img src={photo.imageUrl} alt=""/>
+                        <img src={photo.url} alt=""/>
                         <div className="image-form">
                             <label>{imageContainer.englishDescription}</label>
                             <input value={englishDescription} onChange={(text) => setEnglishDescription(text.target.value)} />

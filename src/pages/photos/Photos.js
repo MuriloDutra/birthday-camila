@@ -34,7 +34,6 @@ function Photos(props){
 
         getHighlightPhotos()
             .then((images) => {
-                images?.forEach((img) => img.url = img?.imageUrl)
                 setHighlightedImages(images)
             })
 
@@ -81,7 +80,7 @@ function Photos(props){
                     {   firstImage &&
                         <div className="container-first-image">
                             <img
-                                src={firstImage.imageUrl}
+                                src={firstImage.url}
                                 onClick={() => handleImageClick(firstImage)}
                                 className="normal-image"
                                 alt={firstImageDescription}
@@ -94,7 +93,7 @@ function Photos(props){
                     {   secondImage &&
                         <div className="container-second-image">
                             <img
-                                src={secondImage.imageUrl}
+                                src={secondImage.url}
                                 onClick={() => handleImageClick(secondImage)}
                                 className="normal-image"
                                 alt={secondImageDescription}
@@ -116,7 +115,7 @@ function Photos(props){
 
     function downloadPhoto(){
         var downloadLink = document.createElement("a");
-        downloadLink.href = overlayImage.imageUrl
+        downloadLink.href = overlayImage.url
         downloadLink.download = `download.${overlayImage.type}`
 
         document.body.appendChild(downloadLink)
@@ -172,8 +171,8 @@ function Photos(props){
                                 <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
                             </div>
                             <img
-                                alt={currentLanguage === 'EN-US' ? overlayImage.imageUrl.englishDescription : overlayImage.imageUrl.portugueseDescription}
-                                src={overlayImage.imageUrl}
+                                alt={currentLanguage === 'EN-US' ? overlayImage.url.englishDescription : overlayImage.url.portugueseDescription}
+                                src={overlayImage.url}
                                 className="image-overlay"
                             />
                         </Fragment>
