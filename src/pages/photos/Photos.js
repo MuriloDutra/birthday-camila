@@ -8,42 +8,39 @@ import Lottie from 'lottie-react-web'
 import SimpleImageSlider from "react-simple-image-slider";
 import './Photos.scss'
 import { Helmet } from 'react-helmet'
+import { Pagination } from '@mui/material'
+import "assets/pagination.scss"
 
 function Photos(props){
     //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
-    const [page, setPage] = useState(0)
-    const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
+    const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(15)
+    const [totalElements, setTotalElements] = useState(0)
     const [loading, setLoading] = useState(false)
-
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if(!loadedAllPhotos)
-                loadPhotosData()
-        }
-    };
+    //OTHERS
+    const totalPages = (totalElements / pageSize).toFixed(0)
     
     useEffect(() => {
-        loadPhotosData()
+        getHighlightPhotos()
+            .then((images) => setHighlightedImages(images))
     }, [])
+
+    useEffect(() => {
+        loadPhotosData()
+    }, [page])
 
     function loadPhotosData(){
         setLoading(true)
 
-        getHighlightPhotos()
-            .then((images) => {
-                setHighlightedImages(images)
-            })
-
-        getApprovedPhotos(page + 1)
-            .then((approved_images) => {
-                setCommonPhotos([...commonPhotos,...approved_images])
-                setPage(page + 1)
-
-                if(approved_images.length < 15)
-                    setLoadedAllPhotos(true);
+        getApprovedPhotos(page - 1)
+            .then((data) => {
+                const { results, totalElements } = {...data}
+                setCommonPhotos(results)
+                setTotalElements(totalElements)
+                setPageSize(data?.pageSize)
             })
             .finally(() => setLoading(false))
     }
@@ -107,11 +104,9 @@ function Photos(props){
         })
     }
 
-
     function handleImageClick(selectedImage){
         setOverlayImage(selectedImage)
     }
-
 
     function downloadPhoto(){
         var downloadLink = document.createElement("a");
@@ -123,6 +118,10 @@ function Photos(props){
         document.body.removeChild(downloadLink)
     }
     
+    function handlePagination(event, newPageNumber) {
+        setPage(newPageNumber)
+    }
+
     return (
         <Consumer>
             {   context => {
@@ -163,6 +162,15 @@ function Photos(props){
                                 }
                             </div>
                         }
+                        <div className="pagination-container">
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                shape="rounded"
+                                className="pagination"
+                                onChange={handlePagination}
+                            />
+                        </div>
                     </div>
                 
                     {   overlayImage &&
