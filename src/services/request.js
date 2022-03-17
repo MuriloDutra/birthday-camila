@@ -46,13 +46,13 @@ export const getPhotos = (page) => {
 }
 
 
-export const getApprovedPhotos = (page, pageSize = 15) => {
+export const getApprovedPhotos = (page, pageSize = 3) => {
     return axiosInstance.get(`getApprovedPhotos?pageNumber=${page}&pageSize=${pageSize}`)
         .then(response => response.data)
 }
 
-export const getDisapprovedPhotos = (page) => {
-    return axiosInstance.get(`getDisapprovedPhotos?pageNumber=${page}&pageSize=15`)
+export const getDisapprovedPhotos = (page, pageSize = 3) => {
+    return axiosInstance.get(`getDisapprovedPhotos?pageNumber=${page}&pageSize=${pageSize}`)
         .then(response => response.data)
 }
 
