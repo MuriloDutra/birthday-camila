@@ -9,14 +9,19 @@ import SimpleImageSlider from "react-simple-image-slider";
 import './Photos.scss'
 import { Helmet } from 'react-helmet'
 import { Pagination } from '@mui/material'
+import { useHistory } from "react-router-dom"
 import "assets/pagination.scss"
+import { getParameterFromURL } from 'helpers'
 
 function Photos(props){
+    //NAVIGATION
+    const history = useHistory()
+    const pageInURL = getParameterFromURL(history?.location?.search, "page")
     //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(findPage())
     const [loading, setLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
     
@@ -29,15 +34,36 @@ function Photos(props){
         loadPhotosData()
     }, [page])
 
+    function findPage(){
+        if(pageInURL)
+            return parseInt(pageInURL)
+        else
+            return 1
+    }
+
     function loadPhotosData(){
         setLoading(true)
 
         getApprovedPhotos(page - 1)
             .then((data) => {
-                setCommonPhotos(data?.results)
-                setTotalPages(data?.totalPages)
+                const invalidPageInURL = (data?.page >= data?.totalPages)
+                if(invalidPageInURL)
+                    setPage(1)
+                else{
+                    setCommonPhotos(data?.results)
+                    setTotalPages(data?.totalPages)
+                }
+
+                history.push(buildURL())
             })
             .finally(() => setLoading(false))
+    }
+
+    function buildURL(){
+        if(page > 1)
+            return `/photos?page=${page}`
+        else
+            return '/photos'
     }
 
     function renderCatalogImages(currentLanguage){

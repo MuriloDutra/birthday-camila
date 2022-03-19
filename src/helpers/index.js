@@ -47,3 +47,7 @@ export function showToast(message, type = null) {
         hideProgressBar: true,
     });
 }
+
+export function getParameterFromURL(locationSearch, param) {
+    return new URLSearchParams(locationSearch).get(param);
+}
