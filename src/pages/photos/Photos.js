@@ -1,55 +1,69 @@
-import React, { useEffect, useState } from 'react'
-import { faTimes, faDownload, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import React, { useEffect, useState, Fragment } from 'react'
+import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Consumer from '../../context/ApplicationContext'
-import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getHighlightPhotos } from '../../services/request'
+import Consumer from 'context/ApplicationContext'
+import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContainer'
+import { getApprovedPhotos, getHighlightPhotos } from 'services/request'
 import Lottie from 'lottie-react-web'
 import SimpleImageSlider from "react-simple-image-slider";
-import './Tour.scss'
+import './Photos.scss'
+import { Helmet } from 'react-helmet'
+import { Pagination } from '@mui/material'
+import { useHistory } from "react-router-dom"
+import "assets/pagination.scss"
+import { getParameterFromURL } from 'helpers'
 
-
-function Tour(props){
-    const { toggleFeedback } = props
-
-    const [currentImage, setCurrentImage] = useState(0)
+function Photos(props){
+    //NAVIGATION
+    const history = useHistory()
+    const pageInURL = getParameterFromURL(history?.location?.search, "page")
+    //STATE
     const [overlayImage, setOverlayImage] = useState(null)
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
-    const [page, setPage] = useState(0)
-    const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
+    const [page, setPage] = useState(findPage())
     const [loading, setLoading] = useState(false)
-
-
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if(!loadedAllPhotos)
-                loadPhotosData()
-        }
-    };
-
+    const [totalPages, setTotalPages] = useState(0)
     
-    useEffect(() => loadPhotosData(), [])
+    useEffect(() => {
+        getHighlightPhotos()
+            .then((images) => setHighlightedImages(images))
+    }, [])
 
+    useEffect(() => {
+        loadPhotosData()
+    }, [page])
+
+    function findPage(){
+        if(pageInURL)
+            return parseInt(pageInURL)
+        else
+            return 1
+    }
 
     function loadPhotosData(){
         setLoading(true)
 
-        getHighlightPhotos()
-            .then((images) => {
-                images?.forEach((img) => img.url = img?.imageUrl)
-                setHighlightedImages(images)
-            })
+        getApprovedPhotos(page - 1)
+            .then((data) => {
+                const invalidPageInURL = (data?.page >= data?.totalPages)
+                if(invalidPageInURL)
+                    setPage(1)
+                else{
+                    setCommonPhotos(data?.results)
+                    setTotalPages(data?.totalPages)
+                }
 
-        getApprovedPhotos(page + 1)
-            .then((approved_images) => {
-                setCommonPhotos([...commonPhotos,...approved_images])
-                setPage(page + 1)
-
-                if(approved_images.length < 15)
-                    setLoadedAllPhotos(true);
+                history.push(buildURL())
             })
             .finally(() => setLoading(false))
+    }
+
+    function buildURL(){
+        if(page > 1)
+            return `/photos?page=${page}`
+        else
+            return '/photos'
     }
 
     function renderCatalogImages(currentLanguage){
@@ -83,14 +97,26 @@ function Tour(props){
                 <div className="image-row" key={firstImage ? firstImage.id : index}>
                     {   firstImage &&
                         <div className="container-first-image">
-                            <img src={firstImage.imageUrl} onClick={() => handleImageClick(firstImage)} className="normal-image" alt={firstImageDescription}/>
+                            <img
+                                src={firstImage.url}
+                                onClick={() => handleImageClick(firstImage)}
+                                className="normal-image"
+                                alt={firstImageDescription}
+                                loading="lazy"
+                            />
                             <p className="photo-description">{firstImageDescription}</p>
                         </div>
                     }
 
                     {   secondImage &&
                         <div className="container-second-image">
-                            <img src={secondImage.imageUrl} onClick={() => handleImageClick(secondImage)} className="normal-image" alt={secondImageDescription}/>
+                            <img
+                                src={secondImage.url}
+                                onClick={() => handleImageClick(secondImage)}
+                                className="normal-image"
+                                alt={secondImageDescription}
+                                loading="lazy"
+                            />
                             <p className="photo-description">{secondImageDescription}</p>
                         </div>
                     }
@@ -99,51 +125,38 @@ function Tour(props){
         })
     }
 
-
     function handleImageClick(selectedImage){
         setOverlayImage(selectedImage)
     }
 
-
     function downloadPhoto(){
         var downloadLink = document.createElement("a");
-        downloadLink.href = overlayImage.imageUrl
+        downloadLink.href = overlayImage.url
         downloadLink.download = `download.${overlayImage.type}`
 
         document.body.appendChild(downloadLink)
         downloadLink.click()
         document.body.removeChild(downloadLink)
     }
-
-    function render_highlights_images(current_language){
-        return highlightedImages.map((image) => {
-            let image_alt = current_language === 'EN-US' ? image.englishDescription : image.portugueseDescription
-
-            return (
-                <div className="image-container">
-                    <img
-                        src={image.imageUrl}
-                        alt={image_alt}
-                        onClick={() => handleImageClick(image)}
-                    />
-                </div>
-            )
-        })
-    }
     
+    function handlePagination(event, newPageNumber) {
+        setPage(newPageNumber)
+    }
+
     return (
         <Consumer>
             {   context => {
                 const { currentLanguage } = context
                 const { photosPage } = context.language
-    
-                if(highlightedImages.length > 0){
-                    var firstImage = highlightedImages[currentImage]
-                }
 
                 return (
                 <>
-                    <div className="tour-body">
+                    <div className="photos-body">
+                        <Helmet>
+                            <title>Photos from Camila Styles birthday</title>
+                            <meta name="description" content="Photos from Camila Styles birthday party, here you can see the greatest moments of it." />
+                        </Helmet>
+
                         {   highlightedImages.length > 0 &&
                             <div className="slider-container">
                                 <SimpleImageSlider
@@ -156,7 +169,7 @@ function Tour(props){
                             </div>
                         }
 
-                        <SendPhotosContainer toggleFeedback={toggleFeedback} />
+                        <SendPhotosContainer />
                         
                         {   commonPhotos.length > 0 &&
                             <div className="images-catalog">
@@ -170,17 +183,28 @@ function Tour(props){
                                 }
                             </div>
                         }
+                        <div className="pagination-container">
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                shape="rounded"
+                                className="pagination"
+                                onChange={handlePagination}
+                            />
+                        </div>
                     </div>
                 
                     {   overlayImage &&
-                        <div className="image-overlay">
-                            <FontAwesomeIcon className="close-overlay" icon={faTimes} onClick={() => setOverlayImage('')} />
-                            <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                        <Fragment>
+                            <div className="overlay" onClick={() => setOverlayImage('')}>
+                                <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                            </div>
                             <img
-                                alt={currentLanguage === 'EN-US' ? overlayImage.imageUrl.englishDescription : overlayImage.imageUrl.portugueseDescription}
-                                src={overlayImage.imageUrl}
+                                alt={currentLanguage === 'EN-US' ? overlayImage.url.englishDescription : overlayImage.url.portugueseDescription}
+                                src={overlayImage.url}
+                                className="image-overlay"
                             />
-                        </div>
+                        </Fragment>
                     }
                 </>
                 )
@@ -189,5 +213,4 @@ function Tour(props){
     )
 }
 
-
-export default Tour
+export default Photos

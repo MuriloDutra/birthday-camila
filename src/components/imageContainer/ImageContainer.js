@@ -4,27 +4,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faCheckCircle, faTimes, faTrash, faSave, faStar } from '@fortawesome/free-solid-svg-icons'
 import './ImageContainer.scss'
 import { approvePhotoById, disapprovePhotoById, deletePhoto, updatePhoto, highlightPhotoById, unhighlightPhotoById } from '../../services/request'
-import { findMessage, showRegularMessage } from '../../helpers'
+import { findMessage, showRegularMessage, showToast } from 'helpers'
 
 
 function ImageContainer(props){
     const [englishDescription, setEnglishDescription] = useState('')
     const [portugueseDescription, setPortugueseDescription] = useState('')
     const [imageName, setImageName] = useState('')
-    const { photo, toggleFeedback, handlePhotoUpdate, defaultCallback, approvedPhotos, disapprovedPhotos } = props
+    const { photo, handlePhotoUpdate, defaultCallback, approvedPhotos, disapprovedPhotos } = props
 
 
     function approveImage(imageId){
         approvePhotoById(imageId)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -33,14 +33,14 @@ function ImageContainer(props){
     function disapproveImage(imageId){
         disapprovePhotoById(imageId)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -49,14 +49,14 @@ function ImageContainer(props){
     function deleteImage(imageId){
         deletePhoto(imageId)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 defaultCallback()
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -64,7 +64,7 @@ function ImageContainer(props){
 
     function updateImage(imageId){
         if(englishDescription === '' && portugueseDescription === '' && imageName === ''){
-            toggleFeedback(true, 'Preencha pelo menos um campo para salvar a foto.')
+            showToast('Preencha pelo menos um campo para salvar a foto.', "error")
             return
         }
 
@@ -76,7 +76,7 @@ function ImageContainer(props){
 
         updatePhoto(imageId, body)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 handlePhotoUpdate()
 
                 setEnglishDescription('')
@@ -85,9 +85,9 @@ function ImageContainer(props){
             })
             .catch(error => {
                 if(error.response && error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -96,14 +96,14 @@ function ImageContainer(props){
     function highlightImage(imageId){
         highlightPhotoById(imageId)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 handlePhotoUpdate()
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -112,14 +112,14 @@ function ImageContainer(props){
     function unhighlightImage(imageId){
         unhighlightPhotoById(imageId)
             .then(data => {
-                toggleFeedback(false, findMessage(data.message))
+                showToast(findMessage(data.message), "success")
                 handlePhotoUpdate()
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
     }
@@ -132,7 +132,7 @@ function ImageContainer(props){
                 
                 return (
                     <div key={photo.id} className="image-container">
-                        <img src={photo.imageUrl} alt=""/>
+                        <img src={photo.url} alt=""/>
                         <div className="image-form">
                             <label>{imageContainer.englishDescription}</label>
                             <input value={englishDescription} onChange={(text) => setEnglishDescription(text.target.value)} />

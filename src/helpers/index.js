@@ -1,7 +1,7 @@
 import { englishLabels } from "../constants/englishLabels"
 import { portugueseLabels } from "../constants/portugueseLabels"
 import { LANGUAGE } from "../constants/sessionStorageKeys"
-
+import {  toast, Slide } from 'react-toastify';
 
 export function findMessage(messageParam){
     let fallbackMessage = null
@@ -36,4 +36,18 @@ export function showRegularMessage(successMessage){
     }
 
     return message
+}
+
+export function showToast(message, type = null) {
+    toast(message, {
+        type: type,
+        theme: "colored",
+        transition: Slide,
+        position: window.innerWidth > 727 ? toast.POSITION.BOTTOM_RIGHT : toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+    });
+}
+
+export function getParameterFromURL(locationSearch, param) {
+    return new URLSearchParams(locationSearch).get(param);
 }

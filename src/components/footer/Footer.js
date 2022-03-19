@@ -1,8 +1,7 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Consumer from '../../context/ApplicationContext'
 import './Footer.scss'
-
 
 function Footer(props){
     return (
@@ -13,10 +12,30 @@ function Footer(props){
                 return (
                     <div className="links-container">
                         <ul className="links">
-                            <li>{footer.firstLink}</li>
-                            <li>{footer.secondLink}</li>
-                            <li>{footer.thridLink}</li>
-                            <li onClick={() => props.history.push('/photos')}>{footer.fourthLink}</li>
+                            <Link
+                                className="footer-link no-text-decoration"
+                                to="/"
+                            >
+                                {footer.firstLink}
+                            </Link>
+                            <Link
+                                className="footer-link no-text-decoration"
+                                to="/"
+                            >
+                                {footer.secondLink}
+                            </Link>
+                            <Link
+                                className="footer-link no-text-decoration"
+                                to="/"
+                            >
+                                {footer.thridLink}
+                            </Link>
+                            <Link
+                                className="footer-link no-text-decoration"
+                                to="/photos"
+                            >
+                                {footer.fourthLink}
+                            </Link>
                         </ul>
                     </div>
                 )
@@ -27,4 +46,4 @@ function Footer(props){
 }
 
 
-export default withRouter(Footer)
+export default Footer

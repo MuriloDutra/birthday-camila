@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MainImage from '../../assets/MainImage.jpg'
 import '../../global.scss'
 import './Home.scss'
@@ -8,15 +8,10 @@ import Consumer from '../../context/ApplicationContext';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
-
+import { Helmet } from 'react-helmet'
 
 function Home() {
   const [isSongPlaying, setIsSongPlaying] = useState(false)
-
-  useEffect(() => {
-    document.title = 'Camila Araújo'
-  }, [])
-
 
   function toggleThemeSong(value){
     const songPlayer = document.getElementById('song-player')
@@ -33,7 +28,6 @@ function Home() {
     setIsSongPlaying(value)
   }
   
-
   return (
     <Consumer>
       { context => {
@@ -41,6 +35,14 @@ function Home() {
         
         return (
           <div id="app" className="App">
+            <Helmet>
+                <title>Camila Styles - A birthday website based on Harry Style's website</title>
+                <meta
+                  name="description"
+                  content="Camila Styles - Here you can see photos and informations about Camila's birthday party. A birthday website based on Harry Styles website."
+                />
+            </Helmet>
+
             <div className="main-content">
               <div className="main-photo-container">
                 <img alt="Harry Styles" src={MainImage} className="main-image"/>
@@ -55,7 +57,11 @@ function Home() {
             <div className="player-container">
               <h1>{homePage.themeSong}</h1>
               <p>Lizzo ft. Harry Styles - Juice [LIVE @ The Fillmore Miami Beach] | SiriusXM</p>
-              <FontAwesomeIcon className="player" onClick={() => toggleThemeSong(isSongPlaying ? false : true)} icon={isSongPlaying ? faPause : faPlay} />
+              <FontAwesomeIcon
+                className="player"
+                onClick={() => toggleThemeSong(isSongPlaying ? false : true)}
+                icon={isSongPlaying ? faPause : faPlay}
+              />
             </div>
 
             <div className="main-video-container">

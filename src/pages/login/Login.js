@@ -6,7 +6,7 @@ import { login } from '../../services/request'
 import { withRouter } from 'react-router-dom'
 import Lottie from 'lottie-react-web'
 import { TOKEN } from '../../constants/sessionStorageKeys'
-import { findMessage, showRegularMessage } from '../../helpers'
+import { findMessage, showRegularMessage, showToast } from 'helpers'
 
 
 function Login(props){
@@ -14,7 +14,7 @@ function Login(props){
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
-    const { history, toggleFeedback } = props
+    const { history } = props
 
 
     function handleButton(){
@@ -39,9 +39,9 @@ function Login(props){
             })
             .catch(error => {
                 if(error.response.data.error){
-                    toggleFeedback(true, findMessage(error.response.data.error))
+                    showToast(findMessage(error.response.data.error), "error")
                 }else{
-                    toggleFeedback(true, showRegularMessage(false))
+                    showToast(showRegularMessage(false), "error")
                 }
             })
             .finally(() => setLoading(false))

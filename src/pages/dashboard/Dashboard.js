@@ -1,70 +1,51 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom'
-import SendPhotosContainer from '../../components/sendPhotosContainer/SendPhotosContainer'
-import { getApprovedPhotos, getDisapprovedPhotos, getPhotoById } from '../../services/request'
+import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContainer'
+import { getApprovedPhotos, getDisapprovedPhotos, getPhotoById } from 'services/request'
 import './Dashboard.scss'
-import Consumer from '../../context/ApplicationContext'
-import ImageContainer from '../../components/imageContainer/ImageContainer'
-import { TOKEN } from '../../constants/sessionStorageKeys'
-import { findMessage, showRegularMessage } from '../../helpers'
+import Consumer from 'context/ApplicationContext'
+import ImageContainer from 'components/imageContainer/ImageContainer'
+import { TOKEN } from 'constants/sessionStorageKeys'
+import { findMessage, showRegularMessage, showToast } from 'helpers'
 import Lottie from 'lottie-react-web'
+import { Pagination } from '@mui/material'
+import "assets/pagination.scss"
 
-
-function Dashboard(props){
-    const [filteredPhotos, setFilteredPhotos] = useState([])
+function Dashboard(props) {
+    //PROPS
+    const { history } = { ...props }
+    //STATE
     const [photos, setPhotos] = useState([])
     const [selectedTab, setSelectedTab] = useState('approved')//Possible values: approved, waitingEvaluation
     const [searchText, setSearchText] = useState('')
-    const [page, setPage] = useState(0)
-    const [loadedAllPhotos, setLoadedAllPhotos] = useState(false)
+    const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
-    const { toggleFeedback } = props
-
-
-    window.onscroll = function() {
-        if((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
-            if(loadedAllPhotos){
-                return
-            }
-
-            loadPhotosData()
-        }
-    };
-
+    const [totalPages, setTotalPages] = useState(0)
 
     useEffect(() => {
-        if(!sessionStorage.getItem(TOKEN)){
-            props.history.replace('/login')
-            props.toggleFeedback(true, 'Permissão negada.')
+        if (!sessionStorage.getItem(TOKEN)) {
+            history.replace('/login')
+            showToast('Permissão negada.', "error")
         }
-
-        loadPhotosData()
     }, [])
 
-
     useEffect(() => {
         loadPhotosData()
-    }, [selectedTab])
+    }, [selectedTab, page])
 
-
-    async function loadPhotosData(){
+    async function loadPhotosData() {
         try {
             setLoading(true)
-            let results = []
+            let data = []
 
-            if(selectedTab === 'waitingEvaluation'){
-                results = await getDisapprovedPhotos(page + 1)
-            }else{
-                results = await getApprovedPhotos(page + 1, "ALL_IMAGES")
-            }
+            if (selectedTab === 'waitingEvaluation')
+                data = await getDisapprovedPhotos(page - 1)
+            else if (selectedTab === 'approved')
+                data = await getApprovedPhotos(page - 1)
 
-            setPhotos([...photos, ...results])
-            setPage(page + 1)
-            
-            if(results.length < 15){
-                setLoadedAllPhotos(true)
-            }
-        }catch(error){
+            setTotalPages(data?.totalPages)
+            setPhotos(data?.results)
+        } catch (error) {
             handleError(error)
             setPhotos([])
         }
@@ -72,81 +53,75 @@ function Dashboard(props){
         setLoading(false)
     }
 
-
-    function handleError(error){
-        if(error.response && error.response.data.error){
-            toggleFeedback(true, findMessage(error.response.data.error))
-        }else{
-            toggleFeedback(true, showRegularMessage(false))
+    function handleError(error) {
+        if (error?.response?.data?.error) {
+            showToast(findMessage(error.response.data.error), "error")
+        } else {
+            showToast(showRegularMessage(false), "error")
         }
     }
 
-
-    function callback(){
+    function callback() {
         setPhotos([])
         setPage(0)
-        setLoadedAllPhotos(false)
     }
 
-
-    function defaultCallback(indexPhoto){
+    function defaultCallback(indexPhoto) {
         let newPhotosArray = [...photos]
         newPhotosArray.splice(indexPhoto, 1)
         setPhotos(newPhotosArray)
     }
 
-
-    async function handlePhotoUpdate(photoId, indexPhoto){
+    async function handlePhotoUpdate(photoId, indexPhoto) {
         let newPhotosArray = [...photos]
         const photo = await getPhotoById(photoId)
         newPhotosArray[indexPhoto] = photo
         setPhotos(newPhotosArray)
     }
 
-
-    function handleOnChangeText(text){
+    function handleOnChangeText(text) {
         const { value } = text.target
         setSearchText(value)
 
-        if(value.length === 0){
+        if (value.length === 0) {
             setPhotos(photos)
-            setFilteredPhotos([])
+            //setFilteredPhotos([])
             return
         }
 
         var results = photos.filter((item) => {
-            if(item.imageName && text){
+            if (item.imageName && text) {
                 let match = item.imageName.toLowerCase().indexOf(value.toLowerCase()) >= 0
                 return match
             }
         });
 
-        if(results.length === 0 && searchText.length > 0){
-            toggleFeedback(true, findMessage('error_photo_not_found'))
+        if (results.length === 0 && searchText.length > 0) {
+            showToast(findMessage('error_photo_not_found'), "error")
         }
 
-        setFilteredPhotos(results)
+        //setFilteredPhotos(results)
     }
 
-
-    function handleOnClickTab(tab){
+    function handleOnClickTab(tab) {
         setPhotos([])
-        setPage(0)
-        setLoadedAllPhotos(false)
+        setPage(1)
         setSelectedTab(tab)
     }
 
+    function handlePagination(event, newPageNumber) {
+        setPage(newPageNumber)
+    }
 
     return (
         <Consumer>
-            {   context => {
+            {context => {
                 const { dashBoardPage } = context.language
 
                 return (
                     <div className="dashboard-body">
                         <SendPhotosContainer
                             dashboardVersion
-                            toggleFeedback={toggleFeedback}
                             callback={() => { callback(); }}
                         />
 
@@ -154,7 +129,7 @@ function Dashboard(props){
                             <p onClick={() => handleOnClickTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
                                 {dashBoardPage.approvedPhotos}
                             </p>
-                            
+
                             <p onClick={() => handleOnClickTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
                                 {dashBoardPage.disapprovedPhotos}
                             </p>
@@ -163,72 +138,35 @@ function Dashboard(props){
                         <div className="images">
                             <p className="filter-title">{dashBoardPage.filterTitle}</p>
 
-                            <input  type="search" className="filter-input" value={searchText} onChange={handleOnChangeText} />
+                            <input type="search" className="filter-input" value={searchText} onChange={handleOnChangeText} />
 
-                            { photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p> }
-
-                            {/*REGULAR PHOTOS*/}
-                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length === 0) && (photos.length > 0) &&
-                                photos.map((photo, index) => {
-                                    return (
-                                        <ImageContainer
-                                            disapprovedPhotos
-                                            toggleFeedback={toggleFeedback}
-                                            photo={photo}
-                                            defaultCallback={() => defaultCallback(index)}
-                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
-                                        />
-                                    )
-                                })
+                            {photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p>}
+                            {photos?.map((photo, index) => {
+                                return (
+                                    <ImageContainer
+                                        approvedPhotos={(selectedTab === 'approved')}
+                                        disapprovedPhotos={(selectedTab === 'waitingEvaluation')}
+                                        photo={photo}
+                                        defaultCallback={() => defaultCallback(index)}
+                                        handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
+                                    />
+                                )
+                            })}
+                            {photos?.length > 0 &&
+                                <div className="pagination-container">
+                                    <Pagination
+                                        count={totalPages}
+                                        page={page}
+                                        shape="rounded"
+                                        className="pagination"
+                                        onChange={handlePagination}
+                                    />
+                                </div>
                             }
 
-                            {   (selectedTab === 'approved') && (filteredPhotos.length === 0) && (photos.length > 0) &&
-                                photos.map((photo, index) => {
-                                    return (
-                                        <ImageContainer
-                                            approvedPhotos
-                                            toggleFeedback={toggleFeedback}
-                                            photo={photo}
-                                            defaultCallback={() => defaultCallback(index)}
-                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
-                                        />
-                                    )
-                                })
-                            }
-
-                            {/*FILTERED PHOTOS*/}
-                            {   (selectedTab === 'waitingEvaluation') && (filteredPhotos.length > 0) &&
-                                filteredPhotos.map((photo, index) => {
-                                    return (
-                                        <ImageContainer
-                                            approvedPhotos
-                                            toggleFeedback={toggleFeedback}
-                                            photo={photo}
-                                            defaultCallback={() => defaultCallback(index)}
-                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
-                                        />
-                                    )
-                                })
-                            }
-
-                            {/*FILTERED PHOTOS*/}
-                            {   (selectedTab === 'approved') && (filteredPhotos.length > 0) &&
-                                filteredPhotos.map((photo, index) => {
-                                    return (
-                                        <ImageContainer
-                                            approvedPhotos
-                                            toggleFeedback={toggleFeedback}
-                                            photo={photo}
-                                            defaultCallback={() => defaultCallback(index)}
-                                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
-                                        />
-                                    )
-                                })
-                            }
-
-                            {   loading &&
+                            {loading &&
                                 <div className="animation-container">
-                                    <Lottie width="8%" height="100%" options={{animationData: require('../../assets/animations/loading.json')}} />
+                                    <Lottie width="8%" height="100%" options={{ animationData: require('../../assets/animations/loading.json') }} />
                                 </div>
                             }
                         </div>
@@ -238,6 +176,5 @@ function Dashboard(props){
         </Consumer>
     )
 }
-
 
 export default withRouter(Dashboard)
