@@ -20,10 +20,7 @@ function Dashboard(props) {
     const [searchText, setSearchText] = useState('')
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
-    const [pageSize, setPageSize] = useState(15)
-    const [totalElements, setTotalElements] = useState(0)
-    //OTHERS
-    const totalPages = (totalElements / pageSize).toFixed(0)
+    const [totalPages, setTotalPages] = useState(0)
 
     useEffect(() => {
         if (!sessionStorage.getItem(TOKEN)) {
@@ -45,11 +42,9 @@ function Dashboard(props) {
                 data = await getDisapprovedPhotos(page - 1)
             else if (selectedTab === 'approved')
                 data = await getApprovedPhotos(page - 1)
-            const { results } = { ...data }
 
-            setTotalElements(data?.totalElements)
-            setPageSize(data?.pageSize)
-            setPhotos(results)
+            setTotalPages(data?.totalPages)
+            setPhotos(data?.results)
         } catch (error) {
             handleError(error)
             setPhotos([])

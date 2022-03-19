@@ -17,11 +17,8 @@ function Photos(props){
     const [highlightedImages, setHighlightedImages] = useState([])
     const [commonPhotos, setCommonPhotos] = useState([])
     const [page, setPage] = useState(1)
-    const [pageSize, setPageSize] = useState(15)
-    const [totalElements, setTotalElements] = useState(0)
     const [loading, setLoading] = useState(false)
-    //OTHERS
-    const totalPages = (totalElements / pageSize).toFixed(0)
+    const [totalPages, setTotalPages] = useState(0)
     
     useEffect(() => {
         getHighlightPhotos()
@@ -37,10 +34,8 @@ function Photos(props){
 
         getApprovedPhotos(page - 1)
             .then((data) => {
-                const { results, totalElements } = {...data}
-                setCommonPhotos(results)
-                setTotalElements(totalElements)
-                setPageSize(data?.pageSize)
+                setCommonPhotos(data?.results)
+                setTotalPages(data?.totalPages)
             })
             .finally(() => setLoading(false))
     }
