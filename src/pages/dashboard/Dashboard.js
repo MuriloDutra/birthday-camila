@@ -41,7 +41,7 @@ function Dashboard(props) {
             if (selectedTab === 'waitingEvaluation')
                 data = await getDisapprovedPhotos(page - 1)
             else if (selectedTab === 'approved')
-                data = await getApprovedPhotos(page - 1)
+                data = await getApprovedPhotos(page - 1, "ALL_IMAGES")
 
             setTotalPages(data?.totalPages)
             setPhotos(data?.results)

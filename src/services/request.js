@@ -46,18 +46,23 @@ export const getPhotos = (page) => {
 }
 
 
-export const getApprovedPhotos = (page, pageSize = 15) => {
-    return axiosInstance.get(`getApprovedPhotos?pageNumber=${page}&pageSize=${pageSize}`)
+export const getApprovedPhotos = (page, sortBy) => {
+    let url = `getApprovedPhotos?pageNumber=${page}`
+
+    if(sortBy)
+        url = url.concat(`&sortBy=${sortBy}`)
+
+    return axiosInstance.get(url)
         .then(response => response.data)
 }
 
-export const getDisapprovedPhotos = (page, pageSize = 15) => {
-    return axiosInstance.get(`getDisapprovedPhotos?pageNumber=${page}&pageSize=${pageSize}`)
+export const getDisapprovedPhotos = (page) => {
+    return axiosInstance.get(`getDisapprovedPhotos?pageNumber=${page}`)
         .then(response => response.data)
 }
 
 export const getHighlightPhotos = (page) => {
-    return axiosInstance.get(`getHighlightPhotos?pageNumber=${page}&pageSize=15`)
+    return axiosInstance.get(`getHighlightPhotos?pageNumber=${page}`)
         .then(response => response.data)
 }
 
