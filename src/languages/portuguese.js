@@ -1,4 +1,4 @@
-export const portugueseLabels = {
+export const portuguese = {
     homePage: {
         firstTitle: 'Karaoke',
         secondTitle: 'O super aniversário de Camila',
@@ -112,8 +112,6 @@ export const portugueseLabels = {
             value: 'error_not_allowed_disapproved_photo',
             display: 'Acão não permitida, esta foto não está aprovada.',
         },
-
-
         success_photos_received: {
             value: 'success_photos_received',
             display: "Fotos recebidas."

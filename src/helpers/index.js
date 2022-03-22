@@ -1,6 +1,6 @@
-import { englishLabels } from "../constants/englishLabels"
-import { portugueseLabels } from "../constants/portugueseLabels"
-import { LANGUAGE } from "../constants/sessionStorageKeys"
+import { english } from "languages/english"
+import { portuguese } from "languages/portuguese"
+import { LANGUAGE } from "constants/sessionStorageKeys"
 import {  toast, Slide } from 'react-toastify';
 
 export function findMessage(messageParam){
@@ -11,10 +11,10 @@ export function findMessage(messageParam){
 
     if(currentLanguage === 'PT-BR'){
         fallbackMessage = isItAnError ? "Um erro desconhecido ocorreu " : 'Ação realizada com sucesso.'
-        match = Object.values(portugueseLabels.messages).find((message) => message.value === messageParam)?.display
+        match = Object.values(portuguese.messages).find((message) => message.value === messageParam)?.display
     }else if(currentLanguage === 'EN-US'){
         fallbackMessage = isItAnError ? "An unknown error happened " : 'Done.'
-        match = Object.values(englishLabels.messages).find((message) => message.value === messageParam)?.display
+        match = Object.values(english.messages).find((message) => message.value === messageParam)?.display
     }
 
     if(match){

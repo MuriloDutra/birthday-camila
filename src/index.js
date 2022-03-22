@@ -5,6 +5,7 @@ import { ApplicationContext } from './context/ApplicationContext';
 import Router from './router';
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import "languages/i18n"
 
 ReactDOM.render(
   <React.StrictMode>
