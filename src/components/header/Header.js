@@ -2,7 +2,7 @@ import React from 'react'
 import './Header.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faInstagram, faTwitter} from '@fortawesome/free-brands-svg-icons'
-import LanguageOptions from '../languageOptions/LanguageOptions'
+import LanguageOptionsContainer from '../languageOptionsContainer/LanguageOptionsContainer'
 import { Link } from 'react-router-dom'
 import Linktree from 'components/linktree/Linktree'
 
@@ -21,6 +21,7 @@ function Header(props){
                         href="https://twitter.com/Ca_araujop?s=08"
                         target="_blank"
                         className="no-text-decoration"
+                        rel="noreferrer"
                     >
                         <FontAwesomeIcon
                             className="icon"
@@ -32,6 +33,7 @@ function Header(props){
                         href="https://www.instagram.com/camilis_araujo/"
                         target="_blank"
                         className="no-text-decoration"
+                        rel="noreferrer"
                     >
                         <FontAwesomeIcon
                             className="icon"
@@ -39,7 +41,7 @@ function Header(props){
                         />
                     </a>
                 </div>
-                <LanguageOptions />
+                <LanguageOptionsContainer />
             </div>
             
             {   showLinkTree &&
