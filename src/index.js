@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import { ApplicationContext } from './context/ApplicationContext';
 import Router from './router';
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,10 +8,8 @@ import "languages/i18n"
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApplicationContext>
-      <ToastContainer autoClose={5000} limit={3}/>
-      <Router />
-    </ApplicationContext>
+    <ToastContainer autoClose={5000} limit={3} />
+    <Router />
   </React.StrictMode>,
   document.getElementById('root')
 );

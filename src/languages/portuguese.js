@@ -5,8 +5,8 @@ export const portuguese = {
         thirdTitle: '#LoveOn30',
         footer: {
             firstLink: 'Você sabe quem ele é?',
-            secondLink: 'Banda de homem',
-            thridLink: 'Banda de garotos',
+            secondLink: 'Man band',
+            thridLink: 'Boy band',
             fourthLink: 'Fotos'
         },
         themeSong: 'Ouça a música tema do site!',

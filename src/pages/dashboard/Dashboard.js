@@ -3,13 +3,13 @@ import { withRouter } from 'react-router-dom'
 import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContainer'
 import { getApprovedPhotos, getDisapprovedPhotos, getPhotoById } from 'services/request'
 import './Dashboard.scss'
-import Consumer from 'context/ApplicationContext'
 import ImageContainer from 'components/imageContainer/ImageContainer'
 import { TOKEN } from 'constants/sessionStorageKeys'
 import { findMessage, showRegularMessage, showToast } from 'helpers'
 import Lottie from 'lottie-react-web'
 import { Pagination } from '@mui/material'
 import "assets/pagination.scss"
+import { useTranslation } from 'react-i18next'
 
 function Dashboard(props) {
     //PROPS
@@ -21,6 +21,8 @@ function Dashboard(props) {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
+    //OTHERS
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (!sessionStorage.getItem(TOKEN)) {
@@ -85,7 +87,6 @@ function Dashboard(props) {
 
         if (value.length === 0) {
             setPhotos(photos)
-            //setFilteredPhotos([])
             return
         }
 
@@ -99,8 +100,6 @@ function Dashboard(props) {
         if (results.length === 0 && searchText.length > 0) {
             showToast(findMessage('error_photo_not_found'), "error")
         }
-
-        //setFilteredPhotos(results)
     }
 
     function handleOnClickTab(tab) {
@@ -114,66 +113,58 @@ function Dashboard(props) {
     }
 
     return (
-        <Consumer>
-            {context => {
-                const { dashBoardPage } = context.language
+        <div className="dashboard-body">
+            <SendPhotosContainer
+                dashboardVersion
+                callback={() => { callback(); }}
+            />
 
-                return (
-                    <div className="dashboard-body">
-                        <SendPhotosContainer
-                            dashboardVersion
-                            callback={() => { callback(); }}
+            <div className="main-menu">
+                <p onClick={() => handleOnClickTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
+                    {t("dashBoardPage.approvedPhotos")}
+                </p>
+
+                <p onClick={() => handleOnClickTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
+                    {t("dashBoardPage.disapprovedPhotos")}
+                </p>
+            </div>
+
+            <div className="images">
+                <p className="filter-title">{t("dashBoardPage.filterTitle")}</p>
+
+                <input type="search" className="filter-input" value={searchText} onChange={handleOnChangeText} />
+
+                {photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p>}
+                {photos?.map((photo, index) => {
+                    return (
+                        <ImageContainer
+                            approvedPhotos={(selectedTab === 'approved')}
+                            disapprovedPhotos={(selectedTab === 'waitingEvaluation')}
+                            photo={photo}
+                            defaultCallback={() => defaultCallback(index)}
+                            handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
                         />
-
-                        <div className="main-menu">
-                            <p onClick={() => handleOnClickTab('approved')} className={selectedTab === 'approved' && 'selected-tab'}>
-                                {dashBoardPage.approvedPhotos}
-                            </p>
-
-                            <p onClick={() => handleOnClickTab('waitingEvaluation')} className={selectedTab === 'waitingEvaluation' && 'selected-tab'}>
-                                {dashBoardPage.disapprovedPhotos}
-                            </p>
-                        </div>
-
-                        <div className="images">
-                            <p className="filter-title">{dashBoardPage.filterTitle}</p>
-
-                            <input type="search" className="filter-input" value={searchText} onChange={handleOnChangeText} />
-
-                            {photos.length === 0 && <p className="warning">Nenhuma foto foi encontrada.</p>}
-                            {photos?.map((photo, index) => {
-                                return (
-                                    <ImageContainer
-                                        approvedPhotos={(selectedTab === 'approved')}
-                                        disapprovedPhotos={(selectedTab === 'waitingEvaluation')}
-                                        photo={photo}
-                                        defaultCallback={() => defaultCallback(index)}
-                                        handlePhotoUpdate={() => handlePhotoUpdate(photo.id, index)}
-                                    />
-                                )
-                            })}
-                            {photos?.length > 0 &&
-                                <div className="pagination-container">
-                                    <Pagination
-                                        count={totalPages}
-                                        page={page}
-                                        shape="rounded"
-                                        className="pagination"
-                                        onChange={handlePagination}
-                                    />
-                                </div>
-                            }
-
-                            {loading &&
-                                <div className="animation-container">
-                                    <Lottie width="8%" height="100%" options={{ animationData: require('../../assets/animations/loading.json') }} />
-                                </div>
-                            }
-                        </div>
+                    )
+                })}
+                {photos?.length > 0 &&
+                    <div className="pagination-container">
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            shape="rounded"
+                            className="pagination"
+                            onChange={handlePagination}
+                        />
                     </div>
-                )
-            }}
-        </Consumer>
+                }
+
+                {loading &&
+                    <div className="animation-container">
+                        <Lottie width="8%" height="100%" options={{ animationData: require('../../assets/animations/loading.json') }} />
+                    </div>
+                }
+            </div>
+        </div>
     )
 }
 
