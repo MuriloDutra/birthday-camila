@@ -1,4 +1,4 @@
-export const englishLabels = {
+export const english = {
     homePage: {
         firstTitle: 'Lip sync',
         secondTitle: 'The new birthday by Camila',
@@ -116,7 +116,6 @@ export const englishLabels = {
             value: 'error_not_allowed_disapproved_photo',
             display: 'Not allowed, this photo is not approved.',
         },
-
         success_photos_received: {
             value: 'success_photos_received',
             display: "Photos sent.",

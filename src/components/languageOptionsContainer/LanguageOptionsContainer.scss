@@ -1,0 +1,53 @@
+@import 'assets/colors.scss';
+
+.languages-container{
+    height: 30px;
+    background-color: $black;
+    color: $white;
+    position: fixed;
+    right: 2%;
+    top: 5%;
+    display: flex;
+
+    .selected-language{
+        background-color: $pink;
+
+        p{
+            color: $black;
+        }
+    }
+
+    button{
+        border: 0px;
+        display: flex;
+        background-color: $black;
+
+        p{
+            margin-top: 3px;
+            font-size: 20px;
+        }
+    }
+
+    .flag-image{
+        width: 25px;
+        height: 20px;
+        margin: 5px;
+    }
+}
+
+@media(max-width: 1024px){
+    .languages-container{
+        top: 2%;
+        width: 14%;
+        height: 40px;
+    }
+}
+
+@media(max-width: 767px){
+    .languages-container{
+        right: 2%;
+        width: 24%;
+        top: 2%;
+        height: 30px;
+    }
+}

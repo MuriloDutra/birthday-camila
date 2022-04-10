@@ -1,7 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Consumer from 'context/ApplicationContext'
 import SendPhotosContainer from 'components/sendPhotosContainer/SendPhotosContainer'
 import { getApprovedPhotos, getHighlightPhotos } from 'services/request'
 import Lottie from 'lottie-react-web'
@@ -12,8 +11,9 @@ import { Pagination } from '@mui/material'
 import { useHistory } from "react-router-dom"
 import "assets/pagination.scss"
 import { getParameterFromURL } from 'helpers'
+import { useTranslation } from 'react-i18next'
 
-function Photos(props){
+function Photos(props) {
     //NAVIGATION
     const history = useHistory()
     const pageInURL = getParameterFromURL(history?.location?.search, "page")
@@ -24,7 +24,11 @@ function Photos(props){
     const [page, setPage] = useState(findPage())
     const [loading, setLoading] = useState(false)
     const [totalPages, setTotalPages] = useState(0)
-    
+    //OTHERS
+    const { t, i18n } = useTranslation()
+    const { language } = { ...i18n }
+    const isEnglish = (language === 'en')
+
     useEffect(() => {
         getHighlightPhotos()
             .then((images) => setHighlightedImages(images))
@@ -34,22 +38,22 @@ function Photos(props){
         loadPhotosData()
     }, [page])
 
-    function findPage(){
-        if(pageInURL)
+    function findPage() {
+        if (pageInURL)
             return parseInt(pageInURL)
         else
             return 1
     }
 
-    function loadPhotosData(){
+    function loadPhotosData() {
         setLoading(true)
 
         getApprovedPhotos(page - 1)
             .then((data) => {
                 const invalidPageInURL = (data?.page >= data?.totalPages)
-                if(invalidPageInURL)
+                if (invalidPageInURL)
                     setPage(1)
-                else{
+                else {
                     setCommonPhotos(data?.results)
                     setTotalPages(data?.totalPages)
                 }
@@ -59,24 +63,24 @@ function Photos(props){
             .finally(() => setLoading(false))
     }
 
-    function buildURL(){
-        if(page > 1)
+    function buildURL() {
+        if (page > 1)
             return `/photos?page=${page}`
         else
             return '/photos'
     }
 
-    function renderCatalogImages(currentLanguage){
+    function renderCatalogImages() {
         let arrayOfContainer = []
         let imageContainer = {}
 
         commonPhotos.forEach((image, index) => {
-            if(index % 2 === 0){
+            if (index % 2 === 0) {
                 imageContainer.firstImage = image
-                
-                if(!commonPhotos[index +  1])
+
+                if (!commonPhotos[index + 1])
                     arrayOfContainer.push(imageContainer)
-            }else{
+            } else {
                 imageContainer.secondImage = image
                 arrayOfContainer.push(imageContainer)
                 imageContainer = {}
@@ -86,16 +90,16 @@ function Photos(props){
         return arrayOfContainer.map((obj, index) => {
             const { firstImage, secondImage } = obj
             const firstImageDescription = firstImage
-                ? currentLanguage === 'EN-US' ? firstImage.englishDescription : firstImage.portugueseDescription
+                ? isEnglish ? firstImage.englishDescription : firstImage.portugueseDescription
                 : ''
 
             const secondImageDescription = secondImage
-                ? currentLanguage === 'EN-US' ? secondImage.englishDescription : secondImage.portugueseDescription
+                ? isEnglish ? secondImage.englishDescription : secondImage.portugueseDescription
                 : ''
 
             return (
                 <div className="image-row" key={firstImage ? firstImage.id : index}>
-                    {   firstImage &&
+                    {firstImage &&
                         <div className="container-first-image">
                             <img
                                 src={firstImage.url}
@@ -108,7 +112,7 @@ function Photos(props){
                         </div>
                     }
 
-                    {   secondImage &&
+                    {secondImage &&
                         <div className="container-second-image">
                             <img
                                 src={secondImage.url}
@@ -125,11 +129,11 @@ function Photos(props){
         })
     }
 
-    function handleImageClick(selectedImage){
+    function handleImageClick(selectedImage) {
         setOverlayImage(selectedImage)
     }
 
-    function downloadPhoto(){
+    function downloadPhoto() {
         var downloadLink = document.createElement("a");
         downloadLink.href = overlayImage.url
         downloadLink.download = `download.${overlayImage.type}`
@@ -138,78 +142,69 @@ function Photos(props){
         downloadLink.click()
         document.body.removeChild(downloadLink)
     }
-    
+
     function handlePagination(event, newPageNumber) {
         setPage(newPageNumber)
     }
 
     return (
-        <Consumer>
-            {   context => {
-                const { currentLanguage } = context
-                const { photosPage } = context.language
+        <Fragment>
+            <div className="photos-body">
+                <Helmet>
+                    <title>Photos from Camila Styles birthday</title>
+                    <meta name="description" content="Photos from Camila Styles birthday party, here you can see the greatest moments of it." />
+                </Helmet>
 
-                return (
-                <>
-                    <div className="photos-body">
-                        <Helmet>
-                            <title>Photos from Camila Styles birthday</title>
-                            <meta name="description" content="Photos from Camila Styles birthday party, here you can see the greatest moments of it." />
-                        </Helmet>
-
-                        {   highlightedImages.length > 0 &&
-                            <div className="slider-container">
-                                <SimpleImageSlider
-                                    width={"70%"}
-                                    height={604}
-                                    images={highlightedImages}
-                                    showBullets={true}
-                                    showNavs={true}
-                                />
-                            </div>
-                        }
-
-                        <SendPhotosContainer />
-                        
-                        {   commonPhotos.length > 0 &&
-                            <div className="images-catalog">
-                                <h1>{photosPage.photosTitle}</h1>
-                                {renderCatalogImages(currentLanguage)}
-
-                                {   loading &&
-                                    <div className="animation-container">
-                                        <Lottie width="8%" height="100%" options={{animationData: require('../../assets/animations/loading.json')}} />
-                                    </div>
-                                }
-                            </div>
-                        }
-                        <div className="pagination-container">
-                            <Pagination
-                                count={totalPages}
-                                page={page}
-                                shape="rounded"
-                                className="pagination"
-                                onChange={handlePagination}
-                            />
-                        </div>
+                {highlightedImages.length > 0 &&
+                    <div className="slider-container">
+                        <SimpleImageSlider
+                            width={"70%"}
+                            height={604}
+                            images={highlightedImages}
+                            showBullets={true}
+                            showNavs={true}
+                        />
                     </div>
-                
-                    {   overlayImage &&
-                        <Fragment>
-                            <div className="overlay" onClick={() => setOverlayImage('')}>
-                                <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                }
+
+                <SendPhotosContainer />
+
+                {commonPhotos.length > 0 &&
+                    <div className="images-catalog">
+                        <h1>{t("photosPage.photosTitle")}</h1>
+                        {renderCatalogImages()}
+
+                        {loading &&
+                            <div className="animation-container">
+                                <Lottie width="8%" height="100%" options={{ animationData: require('../../assets/animations/loading.json') }} />
                             </div>
-                            <img
-                                alt={currentLanguage === 'EN-US' ? overlayImage.url.englishDescription : overlayImage.url.portugueseDescription}
-                                src={overlayImage.url}
-                                className="image-overlay"
-                            />
-                        </Fragment>
-                    }
-                </>
-                )
-            }}
-        </Consumer>
+                        }
+                    </div>
+                }
+                <div className="pagination-container">
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        shape="rounded"
+                        className="pagination"
+                        onChange={handlePagination}
+                    />
+                </div>
+            </div>
+
+            {overlayImage &&
+                <Fragment>
+                    <div className="overlay" onClick={() => setOverlayImage('')}>
+                        <FontAwesomeIcon className="download-button" icon={faDownload} onClick={downloadPhoto} />
+                    </div>
+                    <img
+                        alt={isEnglish ? overlayImage.url.englishDescription : overlayImage.url.portugueseDescription}
+                        src={overlayImage.url}
+                        className="image-overlay"
+                    />
+                </Fragment>
+            }
+        </Fragment>
     )
 }
 

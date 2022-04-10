@@ -1,12 +1,12 @@
-export const portugueseLabels = {
+export const portuguese = {
     homePage: {
         firstTitle: 'Karaoke',
         secondTitle: 'O super aniversário de Camila',
         thirdTitle: '#LoveOn30',
         footer: {
             firstLink: 'Você sabe quem ele é?',
-            secondLink: 'Banda de homem',
-            thridLink: 'Banda de garotos',
+            secondLink: 'Man band',
+            thridLink: 'Boy band',
             fourthLink: 'Fotos'
         },
         themeSong: 'Ouça a música tema do site!',
@@ -112,8 +112,6 @@ export const portugueseLabels = {
             value: 'error_not_allowed_disapproved_photo',
             display: 'Acão não permitida, esta foto não está aprovada.',
         },
-
-
         success_photos_received: {
             value: 'success_photos_received',
             display: "Fotos recebidas."
