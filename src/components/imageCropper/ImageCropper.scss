@@ -1,0 +1,13 @@
+@import '../../assets/colors.scss';
+
+.cropper-container{
+    background-color: $pink;
+    width: 90%;
+    height: 90%;
+    z-index: 10;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+}
